@@ -1,0 +1,9 @@
+.path {
+	animation: infinity-load 1.5s infinite cubic-bezier(0.65, 0.05, 0.36, 1);
+}
+
+@keyframes infinity-load {
+	to {
+		stroke-dashoffset: 10;
+	}
+}

@@ -1,13 +1,10 @@
-import Channelbar from "@/components/ChannelBar";
-import ContentContainer from "@/components/ContentContainer";
-import SideBar from "@/components/SideBar";
+import SideBar from "./SideBar";
+import TopNavigation from "./TopNavigation";
 
 function App() {
   return (
     <div className="flex">
       <SideBar />
-      <Channelbar />
-      <ContentContainer />x
     </div>
   );
 }

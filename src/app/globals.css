@@ -76,9 +76,10 @@
 
   .search-input {
     @apply w-full font-sans font-semibold
-    bg-transparent outline-none 
+    bg-transparent outline-transparent
+    focus:border-transparent focus:ring-0
     text-gray-500  placeholder-gray-500
-    pl-1 rounded;
+    border-none pl-1 rounded;
   }
 
   .content-container {

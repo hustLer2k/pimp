@@ -2,8 +2,8 @@ import "server-only";
 import { Inter } from "@next/font/google";
 import "./globals.css";
 
-import SupabaseListener from "../components/supa-listener";
-import SupabaseProvider from "../components/supa-provider";
+import SupabaseListener from "../components/store/supa-listener";
+import SupabaseProvider from "../components/store/supa-provider";
 import { createClient } from "../utils/supa-server";
 
 export const revalidate = 0;
