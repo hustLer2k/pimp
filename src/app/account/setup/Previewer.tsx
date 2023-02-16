@@ -54,7 +54,6 @@ export default function Previewer({
 		}
 
 		const avatarStyleName = AVATAR_STYLES[avatarIndex];
-
 		let ava = createAvatar(avatars[avatarStyleName], {
 			seed: seed,
 			size: 128,
