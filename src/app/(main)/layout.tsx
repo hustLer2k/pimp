@@ -8,7 +8,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 				<SideBar />
 				<TopNavigation />
 			</nav>
-			<section>{children}</section>
+			<section className="fixed top-16 left-16 w-screen h-screen">
+				{children}
+			</section>
 		</>
 	);
 }

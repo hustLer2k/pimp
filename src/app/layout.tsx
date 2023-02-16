@@ -8,7 +8,6 @@ import { createClient } from "../utils/supa-server";
 
 export const revalidate = 0;
 
-// If loading a variable font, you don't need to specify the font weight
 const inter = Inter({
 	subsets: ["latin"],
 	display: "swap",

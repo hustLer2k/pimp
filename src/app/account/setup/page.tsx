@@ -67,11 +67,11 @@ export default function AccountSetup() {
 		let userID = await getUserId(supabase);
 		const { payload, extension } = avatar as Avatar;
 
-		console.log(`${userID}/avatar.${extension}`);
+		const bucketPath = `${userID}/avatar.${extension}`;
 
 		const avatarUploadPromise = supabase.storage
 			.from("avatars")
-			.upload(`${userID}/avatar.${extension}`, payload, {
+			.upload(bucketPath, payload, {
 				upsert: true,
 				contentType:
 					extension === "svg" ? "image/svg+xml" : payload.type,
@@ -80,6 +80,7 @@ export default function AccountSetup() {
 			id: userID,
 			name: name.trim(),
 			username: usernameRef.current!.value,
+			avatar: `https://tynmutxkvlatvpubyvrx.supabase.co/storage/v1/object/public/avatars/${bucketPath}`,
 		});
 
 		setIsLoading(true);

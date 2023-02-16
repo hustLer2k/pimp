@@ -150,7 +150,7 @@ export default function Auth() {
 								/>
 								<label
 									htmlFor="remember-me"
-									className="text-grey-500 ml-2 block text-sm"
+									className="text-background0 ml-2 block text-sm"
 								>
 									Remember me
 								</label>
