@@ -12,11 +12,12 @@ export default async function UserPage({
 	const { data, error } = await supabase
 		.from("profiles")
 		.select("name, avatar")
-		.eq("username", params.username);
+		.eq("username", params.username)
+		.single();
 
-	if (!data || data.length === 0) notFound();
+	if (!data) notFound();
 
-	return <User username={params.username} {...data[0]} />;
+	return <User username={params.username} {...data} />;
 }
 
 async function fetchUserData() {}
