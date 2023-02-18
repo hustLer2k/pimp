@@ -65,12 +65,12 @@ const Search = () => {
 				<FaSearch size="18" className="text-secondary my-auto" />
 			</div>
 			{expanded && (
-				<div className="rounded-md shadow bg-gray-800 z-10 overflow-auto absolute top-10 left-0 w-full max-h-60">
+				<div className="rounded-md shadow dark:bg-gray-800 bg-gray-400 z-10 overflow-auto absolute top-10 left-0 w-full max-h-60">
 					{searchResults?.map(({ username }) => (
 						<Link
 							key={username}
 							href={`/user/${username}`}
-							className={`${roboto_mono.className} block border-b border-purple-100 py-2 px-1 text-white text-md hover:bg-purple-800`}
+							className={`${roboto_mono.className} block border-b border-purple-100 py-2 px-1 dark:text-white text-gray-700 text-md hover:bg-purple-400 dark:hover:bg-purple-800`}
 						>
 							{username}
 						</Link>

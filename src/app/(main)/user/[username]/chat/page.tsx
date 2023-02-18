@@ -4,9 +4,13 @@ import { createClient } from "@/utils/supa-server";
 
 export const revalidate = 0;
 
-export default async function Chat({ params }: { params: { chatId: string } }) {
+export default async function Chat() {
 	const supabase = createClient();
-	const chatId = params.chatId;
+
+	const { data, error } = await supabase
+		.from("chats");
+		.select("id")
+		
 
 	return (
 		<>

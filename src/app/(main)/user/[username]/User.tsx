@@ -19,8 +19,11 @@ export default function Example({
 	if (userId1) {
 		chatContent = (
 			<Link
-				className="text-lg font-bold flex items-center justify-center text-white"
-				href="/"
+				className="inline-flex text-lg font-bold items-center justify-center text-purple-800 dark:text-white"
+				href={{
+					pathname: "/user/userId1/chat",
+					query: { userId2 },
+				}}
 			>
 				Chat
 				<span className="ml-1">
@@ -37,8 +40,8 @@ export default function Example({
 
 	return (
 		<>
-			<div className="overflow-scroll bg-background flex mt-20 sm:mt-4 justify-between pr-[20vw] pl-[10vw]">
-				<div className="px-4 py-5 sm:px-6">
+			<div className="overflow-scroll bg-background flex mt-20 sm:mt-4 justify-between pr-[20vw] px-[15vw]">
+				<div className="py-5">
 					<h3 className="text-lg font-medium leading-6 text-gray-900">
 						{name}
 					</h3>
@@ -54,7 +57,7 @@ export default function Example({
 					className="rounded-full dark:brightness-75"
 				/>
 			</div>
-			<div className="ml-[10vw]">{chatContent}</div>
+			<div className="ml-[15vw]">{chatContent}</div>
 		</>
 	);
 }
