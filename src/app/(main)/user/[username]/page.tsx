@@ -25,7 +25,7 @@ export default async function UserPage({
 		<User
 			username={params.username}
 			userId1={user?.id}
-			userId2={data.id}
+			recipientId={data.id}
 			{...data}
 		/>
 	);

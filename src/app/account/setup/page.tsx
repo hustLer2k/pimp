@@ -7,6 +7,7 @@ import { useSupabase } from "@/components/store/supa-provider";
 import getUserId from "@/utils/get-user-id";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import { useRouter } from "next/navigation";
+import fetchMultiple from "@/utils/multiple_fetches";
 
 export type Avatar = {
 	payload: File | Uint8Array;
@@ -85,7 +86,9 @@ export default function AccountSetup() {
 			.upload(bucketPath, payload, {
 				upsert: true,
 				contentType:
-					extension === "svg" ? "image/svg+xml" : payload.type,
+					extension === "svg"
+						? "image/svg+xml"
+						: (payload as File).type,
 			});
 		const infoUploadPromise = supabase.from("profiles").upsert({
 			id: userID,

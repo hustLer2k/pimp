@@ -7,13 +7,13 @@ export default function Example({
 	username,
 	avatar,
 	userId1,
-	userId2,
+	recipientId,
 }: {
 	name: string;
 	username: string;
 	avatar: string;
 	userId1: string | undefined;
-	userId2: string;
+	recipientId: string;
 }) {
 	let chatContent;
 	if (userId1) {
@@ -22,7 +22,7 @@ export default function Example({
 				className="inline-flex text-lg font-bold items-center justify-center text-purple-800 dark:text-white"
 				href={{
 					pathname: "/user/userId1/chat",
-					query: { userId2 },
+					query: { recipientId },
 				}}
 			>
 				Chat
