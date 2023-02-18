@@ -13,6 +13,8 @@ import LoadingSpinner from "@/components/ui/LoadingSpinner";
 // validators
 const emailValidator = (value: string) => {
 	if (!value) return [false, "Email must not be empty"] as const;
+	if (value.length > 254)
+		return [false, "Email length must no exceed 254 characters"] as const;
 
 	return [
 		/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value),
@@ -23,6 +25,8 @@ const emailValidator = (value: string) => {
 const PWValidator = (value: string) => {
 	if (value.length < 8)
 		return [false, "Password must contain at least 8 characters"] as const;
+	if (value.length > 30)
+		return [false, "Passowrd length must no exceed 30 characters"] as const;
 
 	return [
 		!/^(.{0,7}|[^0-9]*|[^A-Z]*|[^a-z]*)$/.test(value),
@@ -80,7 +84,7 @@ export default function Auth() {
 							alt="Pimp logo"
 							width={300}
 							height={300}
-							className="mx-auto w-auto"
+							className="mx-auto"
 						/>
 						<h2 className="text-gray-900 mt-6 text-center text-3xl font-bold tracking-tight">
 							{isRegistering
@@ -123,6 +127,7 @@ export default function Auth() {
 									required: true,
 									placeholder: "Email address",
 									className: "rounded-t-md",
+									maxLength: 254,
 								}}
 							/>
 							<Input
@@ -137,6 +142,7 @@ export default function Auth() {
 									required: true,
 									placeholder: "Password",
 									className: "rounded-b-md",
+									maxLength: 30,
 								}}
 							/>
 						</div>

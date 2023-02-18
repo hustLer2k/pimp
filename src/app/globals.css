@@ -36,7 +36,7 @@
 
 	.top-navigation {
 		@apply flex flex-row items-center justify-evenly 
-    bg-gray-300 dark:bg-gray-700 bg-opacity-90 
+    bg-gray-300 dark:bg-gray-800 bg-opacity-90 
     w-full h-16 
     m-0 
     shadow-lg;

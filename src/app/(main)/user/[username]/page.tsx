@@ -9,18 +9,27 @@ export default async function UserPage({
 }) {
 	const supabase = createClient();
 
+	const {
+		data: { user },
+	} = await supabase.auth.getUser();
+
 	const { data, error } = await supabase
 		.from("profiles")
-		.select("name, avatar")
+		.select("name, avatar, id")
 		.eq("username", params.username)
 		.single();
 
 	if (!data) notFound();
 
-	return <User username={params.username} {...data} />;
+	return (
+		<User
+			username={params.username}
+			userId1={user?.id}
+			userId2={data.id}
+			{...data}
+		/>
+	);
 }
-
-async function fetchUserData() {}
 
 // export async function generateStaticParams() {
 // 	const supa_key = process.env.SUPABASE_KEY;

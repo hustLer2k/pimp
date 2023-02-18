@@ -20,6 +20,10 @@ const usernameValidator = (value: string) => {
 			"Please use a username that is at least 6 characters long",
 		] as const;
 	}
+	if (value.length > 22) {
+		return [false, "Please use a username under 23 characters"] as const;
+	}
+
 	return [
 		/^[\w$+=.-]{6,}$/.test(value),
 		"Only letters, digits and $, +, =, -, _, . characters are allowed",
@@ -27,12 +31,19 @@ const usernameValidator = (value: string) => {
 };
 
 const nameValidator = (value: string) => {
-	if (value.length < 4) {
+	if (value.length < 2) {
 		return [
 			false,
-			"Please use a name that is at least 4 characters long",
+			"Please use a name that is at least 2 characters long",
 		] as const;
 	}
+	if (value.length > 100) {
+		return [
+			false,
+			"Please use a shorter version of your name if it exceeds 100 characters",
+		] as const;
+	}
+
 	return [
 		/^[\p{L}\s]{4,}$/u.test(value),
 		"Only letters are allowed",
@@ -117,9 +128,10 @@ export default function AccountSetup() {
 					predicate={usernameValidator}
 					labelVisible={true}
 					inputOptions={{
-						placeholder: "Not less than 6 characters",
+						placeholder: "Between 6 and 22 characters",
 						minLength: 6,
 						className: "rounded-",
+						maxLength: 22,
 					}}
 					ref={usernameRef}
 				/>
@@ -129,9 +141,10 @@ export default function AccountSetup() {
 					predicate={nameValidator}
 					labelVisible={true}
 					inputOptions={{
-						placeholder: "Not less than 4 characters",
-						minLength: 4,
+						placeholder: "Not less than 2 characters",
+						minLength: 2,
 						onChange: (event) => setName(event.target.value),
+						maxLength: 100,
 					}}
 					ref={nameRef}
 				/>
