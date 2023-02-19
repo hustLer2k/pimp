@@ -59,28 +59,34 @@ export default function Messages({
 
 	let messagesJSX;
 	if (messages?.length == 0) {
-		messagesJSX = <h2>No messages yet</h2>;
+		messagesJSX = (
+			<h1 className="text-center text-3xl text-gray-600 tracking-tight mt-[40vh]">
+				No messages yet
+			</h1>
+		);
 	} else {
 		let lastMessageAuthor: string | null = null;
 
 		messagesJSX = (
-			<div className="flex flex-col justify-center px-[15vw] pt-8 pb-20 scroll-smooth overflow-x-hidden">
-				{messages?.map((message, index, allMessages) => (
-					<Message
-						key={message.id}
-						message={message}
-						curUserID={curUserID}
-						curUser={curUser}
-						recipientUser={recipientUser}
-						showProfile={
-							lastMessageAuthor ===
-							(lastMessageAuthor = message.sender)
-								? false
-								: true
-						}
-						lastMessageDate={allMessages[index - 1]?.created_at}
-					/>
-				))}
+			<div className="flex flex-col overflow-y-auto justify-center items-center overflow-x-hidden">
+				<div className="flex flex-col min-h px-[15vw] py-14 scroll-smooth overflow-y-auto overflow-x-hidden h-full">
+					{messages?.map((message, index, allMessages) => (
+						<Message
+							key={message.id}
+							message={message}
+							curUserID={curUserID}
+							curUser={curUser}
+							recipientUser={recipientUser}
+							showProfile={
+								lastMessageAuthor ===
+								(lastMessageAuthor = message.sender)
+									? false
+									: true
+							}
+							lastMessageDate={allMessages[index - 1]?.created_at}
+						/>
+					))}
+				</div>
 			</div>
 		);
 	}

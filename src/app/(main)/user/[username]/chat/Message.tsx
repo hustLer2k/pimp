@@ -76,7 +76,7 @@ export default function Message({
 					</div>
 				</div>
 			)}
-			<div className="px-16 text-gray-800 font-medium break-words w-[70vw]">
+			<div className="px-16 text-gray-800 font-medium break-words w-[70vw] overflow-hidden">
 				{showDate && !showProfile && dateJsx}
 				{message.payload}
 			</div>
