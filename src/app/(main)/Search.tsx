@@ -70,7 +70,7 @@ const Search = () => {
 						<Link
 							key={username}
 							href={`/user/${username}`}
-							className={`${roboto_mono.className} block border-b border-purple-100 py-2 px-1 dark:text-white text-gray-700 text-md hover:bg-purple-400 dark:hover:bg-purple-800`}
+							className={`${roboto_mono.className} block border-b border-purple-100 py-2 px-1 dark:text-white text-gray-700 text-md hover:bg-purple-200 dark:hover:bg-purple-800`}
 						>
 							{username}
 						</Link>

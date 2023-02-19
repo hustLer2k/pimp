@@ -1,11 +1,13 @@
 "use client";
 
-import Image from "next/image";
+import dynamic from "next/dynamic";
 import { Database } from "@/lib/database.types";
-import type { PostgrestError } from "@supabase/postgrest-js/dist/main/types";
 import { useSupabase } from "@/components/store/supa-provider";
 import { useEffect, useState } from "react";
 
+const Message = dynamic(() => import("./Message"), { ssr: false });
+
+import type { PostgrestSingleResponse } from "@supabase/postgrest-js/dist/main/types";
 type User = Database["public"]["Tables"]["profiles"]["Row"];
 type Message = Database["public"]["Tables"]["messages"]["Row"];
 
@@ -15,9 +17,9 @@ export default function Messages({
 }: {
 	curUserID: string;
 	messagesInfo: [
-		{ data: Message[] | null; error: PostgrestError | null },
-		{ data: User[] | null; error: PostgrestError | null },
-		{ data: User[] | null; error: PostgrestError | null }
+		PostgrestSingleResponse<Message[]>,
+		PostgrestSingleResponse<User>,
+		PostgrestSingleResponse<User>
 	];
 }) {
 	const { supabase } = useSupabase();
@@ -39,10 +41,10 @@ export default function Messages({
 				"postgres_changes",
 				{ event: "INSERT", schema: "public", table: "messages" },
 				(payload) =>
-					setMessages((prevMessages) => {
-						console.log(payload);
-						return [...prevMessages, payload.new as Message];
-					})
+					setMessages((prevMessages) => [
+						...prevMessages!,
+						payload.new as Message,
+					])
 			)
 			.subscribe();
 
@@ -59,50 +61,26 @@ export default function Messages({
 	if (messages?.length == 0) {
 		messagesJSX = <h2>No messages yet</h2>;
 	} else {
-		messagesJSX = (
-			<div className="flex flex-col justify-center px-[15vw] h-[80vh] overflow-auto">
-				{messages?.map((message) => {
-					const sentByCurrentUser = message.sender === curUserID;
-					const userInfo = sentByCurrentUser
-						? (curUser as unknown as User)
-						: (recipientUser as unknown as User);
+		let lastMessageAuthor: string | null = null;
 
-					return (
-						<div
-							key={message.id}
-							className={`${
-								message.sender === curUserID
-									? "self-end"
-									: "self-start"
-							} mb-5`}
-						>
-							<div>
-								<Image
-									src={
-										userInfo?.avatar
-											? userInfo.avatar
-											: "@/public/bot.svg"
-									}
-									alt={`${
-										userInfo ? userInfo.username : ""
-									} avatar`}
-									width={100}
-									height={100}
-									className="rounded-full dark:brightness-75"
-								/>
-								<p>
-									{userInfo?.username}{" "}
-									<span>
-										{new Date(
-											message.created_at
-										).toLocaleString()}
-									</span>
-								</p>
-							</div>
-							<div>{message.payload}</div>
-						</div>
-					);
-				})}
+		messagesJSX = (
+			<div className="flex flex-col justify-center px-[15vw] pt-8 pb-20 scroll-smooth overflow-x-hidden">
+				{messages?.map((message, index, allMessages) => (
+					<Message
+						key={message.id}
+						message={message}
+						curUserID={curUserID}
+						curUser={curUser}
+						recipientUser={recipientUser}
+						showProfile={
+							lastMessageAuthor ===
+							(lastMessageAuthor = message.sender)
+								? false
+								: true
+						}
+						lastMessageDate={allMessages[index - 1]?.created_at}
+					/>
+				))}
 			</div>
 		);
 	}

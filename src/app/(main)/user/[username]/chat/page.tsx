@@ -33,7 +33,7 @@ export default async function Chat({
 		.or(
 			`and(sender.eq.${curUserID},recipient.eq.${recipientId}),and(sender.eq.${recipientId},recipient.eq.${curUserID})`
 		)
-		.order("created_at");
+		.order("created_at", { ascending: true });
 	const curUserPromise = supabase
 		.from("profiles")
 		.select()
@@ -52,7 +52,7 @@ export default async function Chat({
 	]);
 
 	return (
-		<div className="flex flex-col">
+		<div className="flex flex-col h-full">
 			<Messages curUserID={curUserID} messagesInfo={messagesInfo} />
 			<Input curUserID={curUserID} recipientId={recipientId} />
 		</div>
