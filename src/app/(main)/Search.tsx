@@ -24,7 +24,6 @@ const Search = () => {
 		let timer = setTimeout(async () => {
 			if (!searchQuery) return;
 
-			console.log("request");
 			const { data, error } = await supabase
 				.from("profiles")
 				.select("username")

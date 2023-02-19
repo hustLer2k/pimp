@@ -1,5 +1,5 @@
 import { createClient } from "@/utils/supa-server";
-import { notFound, redirect } from "next/navigation";
+import { redirect } from "next/navigation";
 import User from "./User";
 
 export default async function UserPage({
@@ -10,9 +10,9 @@ export default async function UserPage({
 	const supabase = createClient();
 
 	const {
-		data: { user },
-	} = await supabase.auth.getUser();
-	if (!user) redirect("/login");
+		data: { session },
+	} = await supabase.auth.getSession();
+	if (!session) redirect("/login");
 
 	const { data, error } = await supabase
 		.from("profiles")

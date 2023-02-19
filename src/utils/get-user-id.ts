@@ -1,15 +1,17 @@
-import { SupabaseClient } from "@supabase/supabase-js";
+import "server-only";
 
-export default async function getUserId(supabase: SupabaseClient) {
-	const {
-		data: { user },
-		error,
-	} = await supabase.auth.getUser();
+import { redirect } from "next/navigation";
+import type { SupabaseClient } from "@supabase/supabase-js";
+import { Database } from "@/lib/database.types";
 
-	if (error) {
-		console.log(error.message);
+export default async function getUserId(supabase: SupabaseClient<Database>) {
+	const { data, error } = await supabase.auth.getSession();
+
+	if (error || !data.session) {
+		console.log(error?.message || "User is not logged in.");
+		redirect("/login");
 		return null;
 	}
 
-	return user?.id;
+	return data.session.user.id;
 }

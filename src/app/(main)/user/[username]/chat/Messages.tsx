@@ -69,7 +69,7 @@ export default function Messages({
 
 		messagesJSX = (
 			<div className="flex flex-col overflow-y-auto justify-center items-center overflow-x-hidden">
-				<div className="flex flex-col min-h px-[15vw] py-14 scroll-smooth overflow-y-auto overflow-x-hidden h-full">
+				<div className="flex flex-col min-h px-[15vw] pt-6 pb-16 scroll-smooth overflow-y-auto overflow-x-hidden h-full">
 					{messages?.map((message, index, allMessages) => (
 						<Message
 							key={message.id}

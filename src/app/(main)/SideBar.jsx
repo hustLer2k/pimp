@@ -1,29 +1,25 @@
-import { BsPlus, BsFillLightningFill, BsGearFill } from "react-icons/bs";
-import { FaFire, FaPoo } from "react-icons/fa";
+import { BsGearFill } from "react-icons/bs";
+import { HomeIcon } from "@heroicons/react/24/solid";
 
 import Link from "next/link";
 import Image from "next/image";
 import { createClient } from "@/utils/supa-server";
 import botImage from "@public/bot.svg";
-import { text } from "node:stream/consumers";
+import getUserId from "@/utils/get-user-id";
 
 export const revalidate = 100;
 
 const SideBar = async () => {
 	const supabase = createClient();
 
-	let { data, error } = await supabase.auth.getUser();
-	let curUserId;
-	if (error || !data.user) {
-		throw error && new Error("User is not logged in");
-	} else {
-		curUserId = data.user.id;
-	}
+	const curUserId = await getUserId(supabase);
+	if (!curUserId) throw new Error("User is not logged in");
 
-	({ data, error } = await supabase
+	let { data } = await supabase
 		.from("messages")
 		.select("recipient, sender")
-		.or(`sender.eq.${curUserId},recipient.eq.${curUserId}`));
+		.or(`sender.eq.${curUserId},recipient.eq.${curUserId}`);
+
 	const SidebarIcons = [];
 	const otherUsers = new Set();
 
@@ -55,8 +51,8 @@ const SideBar = async () => {
 								<Image
 									src={avatar || botImage}
 									alt={`${name}'s avatar`}
-									width={32}
-									height={32}
+									width={38}
+									height={38}
 									className="rounded-full"
 								/>
 							}
@@ -73,11 +69,15 @@ const SideBar = async () => {
 			className="fixed top-0 left-0 h-screen w-16 flex flex-col
                   bg-white dark:bg-gray-900 shadow-lg"
 		>
-			<SideBarIcon icon={<FaFire size="28" />} text="Home" href="/" />
+			<SideBarIcon
+				icon={<HomeIcon className="w-8 h-8" />}
+				text="Home"
+				href="/"
+			/>
 			<Divider />
 			{SidebarIcons}
 			<Divider />
-			<SideBarIcon icon={<BsGearFill size="22" />} text="Settings" />
+			<SideBarIcon icon={<BsGearFill size="32" />} text="Settings" />
 		</div>
 	);
 };
