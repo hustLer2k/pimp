@@ -2,7 +2,12 @@ import { BsPlus, BsFillLightningFill, BsGearFill } from "react-icons/bs";
 import { FaFire, FaPoo } from "react-icons/fa";
 
 import Link from "next/link";
+import Image from "next/image";
 import { createClient } from "@/utils/supa-server";
+import botImage from "@public/bot.svg";
+import { text } from "node:stream/consumers";
+
+export const revalidate = 100;
 
 const SideBar = async () => {
 	const supabase = createClient();
@@ -19,9 +24,47 @@ const SideBar = async () => {
 		.from("messages")
 		.select("recipient, sender")
 		.or(`sender.eq.${curUserId},recipient.eq.${curUserId}`));
+	const SidebarIcons = [];
+	const otherUsers = new Set();
 
 	if (data) {
+		let otherId;
 		for (let { recipient, sender } of data) {
+			otherId = recipient === curUserId ? sender : recipient;
+
+			const {
+				data: { name, avatar, username },
+				error,
+			} = await supabase
+				.from("profiles")
+				.select("avatar, username")
+				.eq("id", otherId)
+				.single();
+
+			if (error) {
+				console.error(error);
+				continue;
+			} else {
+				if (!otherUsers.has(username)) {
+					SidebarIcons.push(
+						<SideBarIcon
+							key={username}
+							text={username}
+							href={`/user/${username}/chat`}
+							icon={
+								<Image
+									src={avatar || botImage}
+									alt={`${name}'s avatar`}
+									width={32}
+									height={32}
+									className="rounded-full"
+								/>
+							}
+						/>
+					);
+					otherUsers.add(username);
+				}
+			}
 		}
 	}
 
@@ -32,11 +75,9 @@ const SideBar = async () => {
 		>
 			<SideBarIcon icon={<FaFire size="28" />} text="Home" href="/" />
 			<Divider />
-			<SideBarIcon icon={<BsPlus size="32" />} />
-			<SideBarIcon icon={<BsFillLightningFill size="20" />} />
-			<SideBarIcon icon={<FaPoo size="20" />} />
+			{SidebarIcons}
 			<Divider />
-			<SideBarIcon icon={<BsGearFill size="22" />} />
+			<SideBarIcon icon={<BsGearFill size="22" />} text="Settings" />
 		</div>
 	);
 };
