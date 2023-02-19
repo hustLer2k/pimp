@@ -36,7 +36,9 @@ export default function Message({
 		: (recipientUser as unknown as User);
 
 	const date = DateFormat(new Date(message.created_at));
-	const dateJsx = <p className="text-sm text-gray-700">{date}</p>;
+	const dateJsx = (
+		<p className="text-sm text-gray-700 dark:text-gray-400">{date}</p>
+	);
 
 	let showDate = true;
 	if (lastMessageDate) {
@@ -68,7 +70,7 @@ export default function Message({
 					/>
 					<div className="flex flex-col justify-center">
 						<p
-							className={`${roboto_mono.className} font-bold text-base text-purple-800`}
+							className={`${roboto_mono.className} font-bold text-base text-purple-800 dark:text-purple-300`}
 						>
 							{userInfo?.username}
 						</p>
@@ -76,7 +78,7 @@ export default function Message({
 					</div>
 				</div>
 			)}
-			<div className="px-16 text-gray-800 font-medium break-words w-[70vw] overflow-hidden">
+			<div className="px-16 text-gray-800 font-medium break-words w-[70vw] overflow-hidden dark:text-gray-100">
 				{showDate && !showProfile && dateJsx}
 				{message.payload}
 			</div>

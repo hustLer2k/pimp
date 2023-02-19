@@ -1,6 +1,6 @@
 import "server-only";
 
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { createClient } from "@/utils/supa-server";
 
 import Messages from "./Messages";
@@ -9,9 +9,9 @@ import Input from "./Input";
 export const revalidate = 0;
 
 export default async function Chat({
-	searchParams,
+	params,
 }: {
-	searchParams: { recipientId: string };
+	params: { username: string };
 }) {
 	const supabase = createClient();
 
@@ -23,8 +23,15 @@ export default async function Chat({
 		redirect("/login");
 	}
 
+	const { data } = await supabase
+		.from("profiles")
+		.select("id")
+		.eq("username", params.username)
+		.single();
+
+	const recipientId = data?.id;
+	if (!recipientId) return notFound();
 	const curUserID = user.id;
-	const recipientId = searchParams.recipientId;
 
 	// messsenges info
 	const messagesPromise = supabase

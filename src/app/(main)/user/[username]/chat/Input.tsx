@@ -67,9 +67,9 @@ export default function Input({
 	}
 
 	return (
-		<div className="fixed bottom-0 bg-gray-50 w-[calc(100%-4rem)] flex items-center justify-center min-h-[4rem] max-h-60 overflow-hidden">
+		<div className="fixed bottom-0 bg-gray-50 dark:bg-gray-700 w-[calc(100%-4rem)] flex items-center justify-center min-h-[4rem] max-h-60 overflow-hidden">
 			<textarea
-				className="m-0 max-h-60 w-[70vw] bg-gray-300 rounded-lg outline-transparent px-10 block border-transparent focus:border-gray-200 focus:bg-gray-200 focus:ring-0 resize-none overflow-auto"
+				className="m-0 max-h-60 w-[70vw] bg-gray-300 dark:bg-gray-600 rounded-lg outline-transparent px-10 block border-transparent focus:bg-gray-200 dark:focus:bg-gray-800 focus:ring-0 resize-none overflow-auto dark:text-white"
 				onKeyUp={keyUpHandler}
 				onChange={changeHandler}
 				ref={inputRef}

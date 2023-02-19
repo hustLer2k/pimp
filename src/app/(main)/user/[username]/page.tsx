@@ -1,5 +1,5 @@
 import { createClient } from "@/utils/supa-server";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import User from "./User";
 
 export default async function UserPage({
@@ -12,23 +12,17 @@ export default async function UserPage({
 	const {
 		data: { user },
 	} = await supabase.auth.getUser();
+	if (!user) redirect("/login");
 
 	const { data, error } = await supabase
 		.from("profiles")
-		.select("name, avatar, id")
+		.select()
 		.eq("username", params.username)
 		.single();
 
-	if (!data) notFound();
+	if (error || !data) throw new Error(error && "Something went wrong.");
 
-	return (
-		<User
-			username={params.username}
-			userId1={user?.id}
-			recipientId={data.id}
-			{...data}
-		/>
-	);
+	return <User {...data} />;
 }
 
 // export async function generateStaticParams() {
