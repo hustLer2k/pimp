@@ -1,5 +1,3 @@
-import "server-only";
-
 import { redirect } from "next/navigation";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { Database } from "@/lib/database.types";

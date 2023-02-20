@@ -8,7 +8,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 				<SideBar />
 				<TopNavigation />
 			</nav>
-			<section className="absolute top-16 left-16 w-[calc(100%-4rem)] h-[calc(100%-4rem)]">
+			<section className="absolute top-16 left-16 w-[calc(100%-4rem)] h-[calc(100%-4rem)] overflow-hidden">
 				{children}
 			</section>
 		</>

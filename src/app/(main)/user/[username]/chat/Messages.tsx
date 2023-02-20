@@ -5,9 +5,15 @@ import { Database } from "@/lib/database.types";
 import { useSupabase } from "@/components/store/supa-provider";
 import { useEffect, useState } from "react";
 
-const Message = dynamic(() => import("./Message"), { ssr: false });
+import Message from "./Message";
+
+// const Message = dynamic(() => import("./Message"), {
+// 	ssr: false,
+// 	loading: () => <LoadingPage />,
+// });
 
 import type { PostgrestSingleResponse } from "@supabase/postgrest-js/dist/main/types";
+import LoadingPage from "@/app/(main)/test/page";
 type User = Database["public"]["Tables"]["profiles"]["Row"];
 type Message = Database["public"]["Tables"]["messages"]["Row"];
 
@@ -60,7 +66,7 @@ export default function Messages({
 	let messagesJSX;
 	if (messages?.length == 0) {
 		messagesJSX = (
-			<h1 className="text-center text-3xl text-gray-600 tracking-tight mt-[40vh]">
+			<h1 className="text-center text-3xl text-gray-600 tracking-tight h-[calc(100%-4rem)] pt-[40vh]">
 				No messages yet
 			</h1>
 		);
@@ -68,8 +74,8 @@ export default function Messages({
 		let lastMessageAuthor: string | null = null;
 
 		messagesJSX = (
-			<div className="flex flex-col overflow-y-auto justify-center items-center overflow-x-hidden">
-				<div className="flex flex-col min-h px-[15vw] pt-6 pb-16 scroll-smooth overflow-y-auto overflow-x-hidden h-full">
+			<div className="flex flex-col overflow-y-auto justify-center items-center overflow-x-hidden h-[calc(100%-4rem)] w-full">
+				<div className="flex flex-col min-h py-6 scroll-smooth overflow-y-auto overflow-x-hidden h-full pl-4 w-full">
 					{messages?.map((message, index, allMessages) => (
 						<Message
 							key={message.id}

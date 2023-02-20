@@ -54,7 +54,7 @@ export default async function Chat({
 	]);
 
 	return (
-		<div className="flex flex-col h-full">
+		<div className="h-full w-full overflow-hidden">
 			<Messages curUserID={curUserID} messagesInfo={messagesInfo} />
 			<Input curUserID={curUserID} recipientId={recipientId} />
 		</div>

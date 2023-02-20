@@ -1,6 +1,13 @@
 "use client";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { useSupabase } from "@/components/store/supa-provider";
+import { FolderArrowDownIcon } from "@heroicons/react/24/outline";
+import { v4 } from "uuid";
+import getExtension from "@/utils/get-extension";
+import { roboto_mono } from "@/components/ui/fonts";
+import { XMarkIcon } from "@heroicons/react/24/outline";
+
+const DEFAULT_HEIGHT = "42px";
 
 export default function Input({
 	curUserID,
@@ -10,7 +17,12 @@ export default function Input({
 	recipientId: string;
 }) {
 	const { supabase } = useSupabase();
+
 	const inputRef = useRef<HTMLTextAreaElement>(null);
+
+	const [dragOver, setDragOver] = useState(false);
+	const [attachments, setAttachments] = useState<File[]>([]);
+	const [attachmentsNames, setAttachmentNames] = useState<string[]>([]);
 
 	useEffect(() => {
 		supabase
@@ -35,11 +47,30 @@ export default function Input({
 	}, []);
 
 	async function sendMessage(payload: string) {
-		let { error } = await supabase
-			.from("messages")
-			.insert({ sender: curUserID, recipient: recipientId, payload });
+		if (!payload) return;
+
+		const attachmentsPaths: string[] = [];
+		for (let file of attachments) {
+			const filename = v4() + getExtension(file.name);
+			const { data, error } = await supabase.storage
+				.from("attachments")
+				.upload(filename, file, {
+					cacheControl: "31536000", // 1 year
+				});
+
+			console.error(error);
+			if (data) attachmentsPaths.push(data.path);
+		}
+
+		let { error } = await supabase.from("messages").insert({
+			sender: curUserID,
+			recipient: recipientId,
+			payload,
+			attachments: attachmentsPaths.length ? attachmentsPaths : null,
+		});
 
 		error && console.error(error);
+		if (!error) setAttachmentNames([]);
 	}
 
 	function keyUpHandler(e: React.KeyboardEvent<HTMLTextAreaElement>) {
@@ -50,7 +81,7 @@ export default function Input({
 
 		sendMessage(input.value.trim());
 		input.value = "";
-		input.style.height = "42px";
+		input.style.height = DEFAULT_HEIGHT;
 	}
 
 	function changeHandler(event: React.ChangeEvent<HTMLTextAreaElement>) {
@@ -58,7 +89,7 @@ export default function Input({
 
 		textElement.value = textElement.value.replace("\n", " ");
 
-		if (textElement.value == "") textElement.style.height = "42px";
+		if (textElement.value == "") textElement.style.height = DEFAULT_HEIGHT;
 		else
 			textElement.style.height =
 				(textElement.scrollHeight === 40
@@ -66,15 +97,83 @@ export default function Input({
 					: textElement.scrollHeight) + "px";
 	}
 
+	// drag & drop
+	function dropHandler(ev: React.DragEvent<HTMLDivElement>) {
+		ev.preventDefault();
+
+		if (ev.dataTransfer.items) {
+			[...ev.dataTransfer.items].forEach(async (item, i) => {
+				if (item.kind === "file") {
+					const file = item.getAsFile();
+					if (!file) return;
+
+					console.log(
+						`… file[${i}].name = ${file?.name} ${file?.type}`
+					);
+
+					setAttachments((prev) => [...prev, file]);
+					setAttachmentNames((prev) => [...prev, file.name]);
+				}
+			});
+		}
+
+		setDragOver(false);
+	}
+
+	function dragoverHandler(e: React.DragEvent<HTMLDivElement>) {
+		e.preventDefault();
+		setDragOver(true);
+	}
+
+	function dragLeaveHandler(e: React.DragEvent<HTMLDivElement>) {
+		setDragOver(false);
+	}
+
+	function removeAttachment(i: number) {
+		setAttachments((prev) => prev.filter((_, index) => index !== i));
+		setAttachmentNames((prev) => prev.filter((_, index) => index !== i));
+	}
+
 	return (
-		<div className="fixed bottom-0 bg-gray-50 dark:bg-gray-700 w-[calc(100%-4rem)] flex items-center justify-center min-h-[4rem] max-h-60 overflow-hidden">
+		<div
+			onDrop={dropHandler}
+			onDragOver={dragoverHandler}
+			onDragLeave={dragLeaveHandler}
+			className="bg-gray-50 dark:bg-gray-700 flex justify-center items-center min-h-[4rem] max-h-60 overflow-hidden"
+		>
+			<div className="overflow-auto mx-8 h-12 max-w-[30%]">
+				{attachmentsNames.map((v, i) => (
+					<div
+						key={i}
+						className={
+							roboto_mono.className +
+							" dark:text-gray-200 text-sm w-full flex items-center justify-between mb-1"
+						}
+					>
+						<p className="w-10/12 break-all">{v}</p>
+						<XMarkIcon
+							className="w-6 h-6 dark:text-white"
+							onClick={() => removeAttachment(i)}
+						/>
+					</div>
+				))}
+			</div>
+
+			{dragOver && (
+				<FolderArrowDownIcon
+					className="w-16 h-16 dark:text-gray-50"
+					title="Drag n drop"
+				/>
+			)}
 			<textarea
-				className="m-0 max-h-60 w-[70vw] bg-gray-300 dark:bg-gray-600 rounded-lg outline-transparent px-10 block border-transparent focus:bg-gray-200 dark:focus:bg-gray-800 focus:ring-0 resize-none overflow-auto dark:text-white focus:border-transparent"
+				className={`m-0 max-h-60 w-[69%] bg-gray-300 dark:bg-gray-600 rounded-lg outline-transparent px-10 block border-transparent
+			  	focus:bg-gray-200 dark:focus:bg-gray-800 focus:ring-0 resize-none overflow-auto lg:overflow-hidden
+				  dark:text-white focus:border-transparent ${dragOver && "hidden"}`}
 				onKeyUp={keyUpHandler}
 				onChange={changeHandler}
 				ref={inputRef}
 				maxLength={993}
-				style={{ height: "42px" }}
+				style={{ height: DEFAULT_HEIGHT }}
 			/>
 		</div>
 	);

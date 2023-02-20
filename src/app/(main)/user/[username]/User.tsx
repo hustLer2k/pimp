@@ -45,7 +45,7 @@ export default function Example({
 					alt={`${name}'s avatar`}
 					width={100}
 					height={100}
-					className="rounded-full dark:brightness-75"
+					className="rounded-full dark:brightness-90"
 				/>
 			</div>
 			<div className="ml-[15vw]">{chatContent}</div>

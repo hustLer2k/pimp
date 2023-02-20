@@ -7,7 +7,6 @@ import { useSupabase } from "@/components/store/supa-provider";
 import getUserId from "@/utils/get-user-id";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import { useRouter } from "next/navigation";
-import fetchMultiple from "@/utils/multiple_fetches";
 
 export type Avatar = {
 	payload: File | Uint8Array;
@@ -122,7 +121,7 @@ export default function AccountSetup() {
 			onSubmit={submitHandler}
 		>
 			<div className="w-full max-w-md space-y-9">
-				<h2 className="text-gray-900 text-center text-3xl font-bold tracking-tight">
+				<h2 className="text-gray-900 dark:text-white text-center text-3xl font-bold tracking-tight">
 					Account setup
 				</h2>
 
@@ -133,7 +132,7 @@ export default function AccountSetup() {
 					inputOptions={{
 						placeholder: "Between 6 and 22 characters",
 						minLength: 6,
-						className: "rounded-",
+						className: "rounded dark:bg-gray-300",
 						maxLength: 22,
 					}}
 					ref={usernameRef}
@@ -148,6 +147,7 @@ export default function AccountSetup() {
 						minLength: 2,
 						onChange: (event) => setName(event.target.value),
 						maxLength: 100,
+						className: "rounded dark:bg-gray-300",
 					}}
 					ref={nameRef}
 				/>
@@ -159,7 +159,7 @@ export default function AccountSetup() {
 			</div>
 
 			<Previewer seed={name.trim()} onAvatarChange={handleAvatarChange} />
-			<p className="text-center text-small text-purple-700 font-mono font-semibold mb-2 tracking-tight">
+			<p className="text-center text-small text-purple-700 dark:text-purple-300 font-mono font-semibold mb-2 tracking-tight">
 				Accepted filetypes: svg, jpg, jpeg, png, gif
 			</p>
 
@@ -168,7 +168,7 @@ export default function AccountSetup() {
 			) : (
 				<button
 					type="submit"
-					className="bg-purple-600 border-transparent text-white rounded-md border py-2 px-4 text-sm font-medium hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+					className="bg-purple-600 dark:bg-purple-500 border-transparent text-white rounded-md border py-2 px-4 text-sm font-medium hover:bg-purple-700 dark:hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
 				>
 					Proceed
 				</button>

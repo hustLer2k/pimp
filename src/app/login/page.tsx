@@ -2,6 +2,7 @@
 
 import { LockClosedIcon } from "@heroicons/react/20/solid";
 import logoWhite from "@public/logo_white.png";
+import logoBlack from "@public/logo_black.png";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { useSupabase } from "@/components/store/supa-provider";
@@ -45,6 +46,8 @@ export default function Auth() {
 	const emailRef = useRef<InputRef>(null);
 	const PWRef = useRef<InputRef>(null);
 
+	const darkTheme = window.matchMedia("(prefers-color-scheme: dark)").matches;
+
 	const formSubmitHandler = async (event: React.SyntheticEvent) => {
 		event.preventDefault();
 
@@ -80,24 +83,24 @@ export default function Auth() {
 				<div className="w-full max-w-md space-y-8">
 					<div>
 						<Image
-							src={logoWhite}
+							src={darkTheme ? logoBlack : logoWhite}
 							alt="Pimp logo"
 							width={300}
 							height={300}
 							className="mx-auto"
 						/>
-						<h2 className="text-gray-900 mt-6 text-center text-3xl font-bold tracking-tight">
+						<h2 className="text-gray-900 dark:text-white mt-6 text-center text-3xl font-bold tracking-tight">
 							{isRegistering
 								? "Create an account"
 								: "Sign in to your account"}
 						</h2>
-						<p className="text-gray-600 mt-2 text-center text-sm">
+						<p className="text-gray-600 dark:text-gray-200 mt-2 text-center text-sm">
 							Or{" "}
 							<button
 								onClick={() =>
 									setIsRegistering((prevState) => !prevState)
 								}
-								className="font-medium text-purple-600 hover:text-purple-500"
+								className="font-medium text-purple-600 dark:text-purple-400 hover:text-purple-500 dark:hover:text-purple-300"
 							>
 								{isRegistering
 									? "log in to your account"
@@ -126,7 +129,7 @@ export default function Auth() {
 									autoComplete: "email",
 									required: true,
 									placeholder: "Email address",
-									className: "rounded-t-md",
+									className: "rounded-t-md dark:bg-gray-300",
 									maxLength: 254,
 								}}
 							/>
@@ -141,7 +144,7 @@ export default function Auth() {
 									autoComplete: "password",
 									required: true,
 									placeholder: "Password",
-									className: "rounded-b-md",
+									className: "rounded-b-md dark:bg-gray-300",
 									maxLength: 30,
 								}}
 							/>
@@ -156,7 +159,7 @@ export default function Auth() {
 								/>
 								<label
 									htmlFor="remember-me"
-									className="text-background0 ml-2 block text-sm"
+									className="text-background0 ml-2 block text-sm dark:text-gray-300"
 								>
 									Remember me
 								</label>
@@ -166,7 +169,7 @@ export default function Auth() {
 								<div className="text-sm">
 									<a
 										href="#"
-										className="font-medium text-purple-600 hover:text-purple-500"
+										className="font-medium text-purple-600 dark:text-purple-400 hover:text-purple-500 dark:hover:text-purple-300"
 									>
 										Forgot your password?
 									</a>
@@ -187,7 +190,7 @@ export default function Auth() {
 									PWRef.current!.touch();
 								}}
 								type="submit"
-								className="max-h-10 bg-purple-600 border-transparent text-white group relative flex items-center w-full justify-center rounded-md border py-2 px-4 text-sm font-medium hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+								className="max-h-10 bg-purple-600 dark:bg-purple-500 border-transparent text-white group relative flex items-center w-full justify-center rounded-md border py-2 px-4 text-sm font-medium hover:bg-purple-700 dark:hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500 dark:focus:ring-purple-600 focus:ring-offset-2"
 							>
 								<span className="absolute inset-y-0 left-0 flex items-center pl-3">
 									<LockClosedIcon

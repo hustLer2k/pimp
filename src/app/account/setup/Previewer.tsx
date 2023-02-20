@@ -8,6 +8,7 @@ import { useEffect, useState, useRef } from "react";
 import botImage from "@public/bot.svg";
 
 import { Avatar } from "./page";
+import getExtension from "@/utils/get-extension";
 
 const ACCEPTED_FILETYPES = new Set(["svg", "png", "jpg", "jpeg", "gif"]);
 const ARROW_CLASSES =
@@ -73,8 +74,7 @@ export default function Previewer({
 		const file = e.target.files?.[0];
 		if (!file) return;
 
-		console.log(file.name);
-		const extension = file.name.split(".").slice(-1)[0];
+		const extension = getExtension(file.name);
 		console.log(extension);
 		if (!ACCEPTED_FILETYPES.has(extension)) {
 			setError(`Filetype not supported: ${extension}`);
@@ -108,7 +108,7 @@ export default function Previewer({
 						alt="Avatar"
 						width={128}
 						height={128}
-						className="rounded-full"
+						className="rounded-full dark:brightness-90"
 					/>
 					<button
 						type="button"

@@ -51,9 +51,9 @@ const SideBar = async () => {
 								<Image
 									src={avatar || botImage}
 									alt={`${name}'s avatar`}
-									width={38}
-									height={38}
-									className="rounded-full"
+									width={69}
+									height={69}
+									className="rounded-full dark:brightness-90"
 								/>
 							}
 						/>
