@@ -88,6 +88,7 @@ export default function Message({
 							alt="Attached image"
 							priority={true}
 							placeholder="empty"
+							loading="eager"
 						/>
 					);
 				} else {

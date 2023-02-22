@@ -223,5 +223,5 @@
 }
 
 ::-webkit-scrollbar-thumb {
-	@apply bg-gray-500 dark:bg-green-400;
+	@apply bg-gray-500 dark:bg-purple-700 dark:opacity-50;
 }

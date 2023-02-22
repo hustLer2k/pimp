@@ -7,6 +7,7 @@ import getExtension from "@/utils/get-extension";
 import { roboto_mono } from "@/components/ui/fonts";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { Database } from "@/lib/database.types";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
 type Message = Database["public"]["Tables"]["messages"]["Row"];
 
 const DEFAULT_HEIGHT = "42px";
@@ -27,6 +28,7 @@ export default function Input({
 	const [dragOver, setDragOver] = useState(false);
 	const [attachments, setAttachments] = useState<File[]>([]);
 	const [attachmentsNames, setAttachmentNames] = useState<string[]>([]);
+	const [sending, setSending] = useState(false);
 
 	useEffect(() => {
 		supabase
@@ -51,8 +53,9 @@ export default function Input({
 	}, [recipientId, supabase]);
 
 	async function sendMessage(payload: string) {
-		if (!payload) return;
+		if (!payload || sending) return;
 
+		setSending(true);
 		const attachmentsPaths: string[] = [];
 		for (let file of attachments) {
 			const filename = v4() + getExtension(file.name);
@@ -83,6 +86,7 @@ export default function Input({
 				id: v4(),
 			});
 		}
+		setSending(false);
 	}
 
 	function keyUpHandler(e: React.KeyboardEvent<HTMLTextAreaElement>) {
@@ -173,15 +177,19 @@ export default function Input({
 					title="Drag n drop"
 				/>
 			)}
+
 			<textarea
 				className={`m-0 max-h-60 w-[69%] bg-gray-300 dark:bg-gray-600 rounded-lg outline-transparent px-10 block border-transparent
 			  	focus:bg-gray-200 dark:focus:bg-gray-800 focus:ring-0 resize-none overflow-auto lg:overflow-hidden
-				  dark:text-white focus:border-transparent ${dragOver && "hidden"}`}
+				  dark:text-white focus:border-transparent disabled:opacity-50 ${
+						dragOver && "hidden"
+					}`}
 				onKeyUp={keyUpHandler}
 				onChange={changeHandler}
 				ref={inputRef}
 				maxLength={993}
 				style={{ height: DEFAULT_HEIGHT }}
+				disabled={sending}
 			/>
 		</div>
 	);
