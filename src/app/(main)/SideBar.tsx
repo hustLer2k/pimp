@@ -47,47 +47,6 @@ const SideBar = async () => {
 		}
 	}
 
-	// if (data) {
-	// 	let otherId;
-	// 	for (let { recipient, sender } of data) {
-	// 		otherId = recipient === curUserId ? sender : recipient;
-
-	// 		const {
-	// 			data: { name, avatar, username },
-	// 			error,
-	// 		} = await supabase
-	// 			.from("profiles")
-	// 			.select("avatar, username")
-	// 			.eq("id", otherId)
-	// 			.single();
-
-	// 		if (error) {
-	// 			console.error(error);
-	// 			continue;
-	// 		} else {
-	// 			if (!otherUsers.has(username)) {
-	// 				SidebarIcons.push(
-	// 					<SideBarIcon
-	// 						key={username}
-	// 						text={username}
-	// 						href={`/user/${username}/chat`}
-	// 						icon={
-	// 							<Image
-	// 								src={avatar || botImage}
-	// 								alt={`${name}'s avatar`}
-	// 								width={69}
-	// 								height={69}
-	// 								className="rounded-full dark:brightness-90"
-	// 							/>
-	// 						}
-	// 					/>
-	// 				);
-	// 				otherUsers.add(username);
-	// 			}
-	// 		}
-	// 	}
-	// }
-
 	return (
 		<div
 			className="fixed top-0 left-0 h-screen w-16 flex flex-col

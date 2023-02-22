@@ -1,11 +1,8 @@
-import {
-	FaHashtag,
-	FaRegBell,
-	FaUserCircle,
-	FaMoon,
-	FaSun,
-} from "react-icons/fa";
+import "server-only";
+
+import { FaHashtag, FaRegBell, FaMoon, FaSun } from "react-icons/fa";
 import Search from "./Search";
+import UserCircle from "./UserCircle";
 
 const TopNavigation = () => {
 	return (
@@ -36,9 +33,6 @@ const ThemeIcon = () => {
 };
 
 const BellIcon = () => <FaRegBell size="24" className="top-navigation-icon" />;
-const UserCircle = () => (
-	<FaUserCircle size="24" className="top-navigation-icon" />
-);
 const HashtagIcon = () => <FaHashtag size="20" className="title-hashtag" />;
 const Title = () => <h5 className="title-text">Pimp</h5>;
 

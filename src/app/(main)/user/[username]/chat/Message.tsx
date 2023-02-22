@@ -4,11 +4,11 @@ import { useRef, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import getExtension from "@/utils/get-extension";
-import botAvatar from "@public/bot.svg";
 import { Database } from "@/lib/database.types";
 import { roboto_mono } from "@/components/ui/fonts";
 import { useSupabase } from "@/components/store/supa-provider";
 import { FolderArrowDownIcon } from "@heroicons/react/24/outline";
+import Avatar from "@/components/ui/Avatar";
 
 type Message = Database["public"]["Tables"]["messages"]["Row"];
 type User = Database["public"]["Tables"]["profiles"]["Row"];
@@ -126,12 +126,11 @@ export default function Message({
 		>
 			{showProfile && (
 				<div className="flex items-center mb-2">
-					<Image
-						src={userInfo?.avatar ? userInfo.avatar : botAvatar}
-						alt={`${userInfo ? userInfo.username : ""} avatar`}
-						width={50}
-						height={50}
-						className="rounded-full dark:brightness-90 mr-3"
+					<Avatar
+						username={userInfo?.username}
+						avatar={userInfo?.avatar}
+						size={50}
+						classes="mr-3"
 					/>
 					<div className="flex flex-col justify-center">
 						<p

@@ -3,7 +3,7 @@ import { createAvatar } from "@dicebear/core";
 import * as avatars from "@dicebear/collection";
 import { ArrowRightIcon, ArrowLeftIcon } from "@heroicons/react/24/solid";
 import { PhotoIcon } from "@heroicons/react/24/outline";
-import Image from "next/image";
+import Avatar from "@/components/ui/Avatar";
 import { useEffect, useState, useRef } from "react";
 import botImage from "@public/bot.svg";
 
@@ -103,13 +103,7 @@ export default function Previewer({
 					}
 				/>
 				<div>
-					<Image
-						src={avatar}
-						alt="Avatar"
-						width={128}
-						height={128}
-						className="rounded-full dark:brightness-90"
-					/>
+					<Avatar username={null} avatar={avatar} size={128} />
 					<button
 						type="button"
 						onClick={() => inputRef.current?.click()}
