@@ -7,7 +7,6 @@ import getExtension from "@/utils/get-extension";
 import { roboto_mono } from "@/components/ui/fonts";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { Database } from "@/lib/database.types";
-import LoadingSpinner from "@/components/ui/LoadingSpinner";
 type Message = Database["public"]["Tables"]["messages"]["Row"];
 
 const DEFAULT_HEIGHT = "42px";
@@ -56,37 +55,40 @@ export default function Input({
 		if (!payload || sending) return;
 
 		setSending(true);
-		const attachmentsPaths: string[] = [];
-		for (let file of attachments) {
-			const filename = v4() + getExtension(file.name);
-			const { data, error } = await supabase.storage
-				.from("attachments")
-				.upload(filename, file, {
-					cacheControl: "31536000", // 1 year
+		try {
+			const attachmentsPaths: string[] = [];
+			for (let file of attachments) {
+				const filename = v4() + getExtension(file.name);
+				const { data } = await supabase.storage
+					.from("attachments")
+					.upload(filename, file, {
+						cacheControl: "31536000", // 1 year
+					});
+
+				if (data) attachmentsPaths.push(data.path);
+			}
+
+			let message = {
+				sender: curUserID,
+				recipient: recipientId,
+				payload,
+				attachments: attachmentsPaths.length ? attachmentsPaths : null,
+			};
+			let { error } = await supabase.from("messages").insert(message);
+
+			error && console.error(error);
+			if (!error) {
+				setAttachmentNames([]);
+				setAttachments([]);
+				onSendMessage({
+					...message,
+					created_at: new Date().toISOString(),
+					id: v4(),
 				});
-
-			if (data) attachmentsPaths.push(data.path);
+			}
+		} finally {
+			setSending(false);
 		}
-
-		let message = {
-			sender: curUserID,
-			recipient: recipientId,
-			payload,
-			attachments: attachmentsPaths.length ? attachmentsPaths : null,
-		};
-		let { error } = await supabase.from("messages").insert(message);
-
-		error && console.error(error);
-		if (!error) {
-			setAttachmentNames([]);
-			setAttachments([]);
-			onSendMessage({
-				...message,
-				created_at: new Date().toISOString(),
-				id: v4(),
-			});
-		}
-		setSending(false);
 	}
 
 	function keyUpHandler(e: React.KeyboardEvent<HTMLTextAreaElement>) {

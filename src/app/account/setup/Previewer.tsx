@@ -50,7 +50,7 @@ export default function Previewer({
 	}, [onAvatarChange]);
 
 	useEffect(() => {
-		if (seed.length < 4) {
+		if (seed.length < 2) {
 			return;
 		}
 

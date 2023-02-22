@@ -45,7 +45,7 @@ const nameValidator = (value: string) => {
 	}
 
 	return [
-		/^[\p{L}\s]{4,}$/u.test(value),
+		/^[\p{L}\s]{2,}$/u.test(value),
 		"Only letters are allowed",
 	] as const;
 };
@@ -68,8 +68,6 @@ export default function AccountSetup() {
 
 	const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		console.log(usernameRef.current!.isValid);
-		console.log(nameRef.current!.isValid);
 
 		if (!(usernameRef.current!.isValid && nameRef.current!.isValid)) {
 			return;

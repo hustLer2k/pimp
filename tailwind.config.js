@@ -46,6 +46,16 @@ module.exports = {
 			spacing: {
 				88: "22rem",
 			},
+
+			keyframes: {
+				fadein: {
+					"0%": { opacity: "0" },
+					"100%": { opacity: "1" },
+				},
+			},
+			animation: {
+				fadein: "fadein 750ms ease-in",
+			},
 		},
 	},
 	plugins: [

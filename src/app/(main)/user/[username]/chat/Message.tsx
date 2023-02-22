@@ -8,6 +8,7 @@ import botAvatar from "@public/bot.svg";
 import { Database } from "@/lib/database.types";
 import { roboto_mono } from "@/components/ui/fonts";
 import { useSupabase } from "@/components/store/supa-provider";
+import { FolderArrowDownIcon } from "@heroicons/react/24/outline";
 
 type Message = Database["public"]["Tables"]["messages"]["Row"];
 type User = Database["public"]["Tables"]["profiles"]["Row"];
@@ -86,13 +87,17 @@ export default function Message({
 							width={228}
 							height={228}
 							alt="Attached image"
-							priority={true}
 							placeholder="empty"
 							loading="eager"
 						/>
 					);
 				} else {
-					content = <div key={attachment}>{attachment}</div>;
+					content = (
+						<div key={attachment}>
+							<FolderArrowDownIcon className="w-10 h-10 inline-block mr-2" />
+							{attachment}
+						</div>
+					);
 				}
 
 				setAttachments((prevAttachments) =>
@@ -101,6 +106,7 @@ export default function Message({
 							key={attachment}
 							href={dataURL}
 							download={attachment}
+							className="my-4 block"
 							target="_blank"
 						>
 							{content}

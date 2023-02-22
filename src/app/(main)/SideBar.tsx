@@ -1,6 +1,5 @@
 import "server-only";
 
-import Link from "next/link";
 import Image from "next/image";
 import { BsGearFill } from "react-icons/bs";
 import { HomeIcon } from "@heroicons/react/24/solid";
@@ -23,49 +22,71 @@ const SideBar = async () => {
 		.select("recipient, sender")
 		.or(`sender.eq.${curUserId},recipient.eq.${curUserId}`);
 
-	const SidebarIcons = [];
-	const otherUsers = new Set();
+	const SidebarIcons: { avatar: string | null; username: string }[] = [];
+	const otherUsers = new Set<string>();
 
 	if (data) {
 		let otherId;
 		for (let { recipient, sender } of data) {
 			otherId = recipient === curUserId ? sender : recipient;
 
-			const {
-				data: { name, avatar, username },
-				error,
-			} = await supabase
+			const { data } = await supabase
 				.from("profiles")
 				.select("avatar, username")
 				.eq("id", otherId)
 				.single();
 
-			if (error) {
-				console.error(error);
-				continue;
-			} else {
-				if (!otherUsers.has(username)) {
-					SidebarIcons.push(
-						<SideBarIcon
-							key={username}
-							text={username}
-							href={`/user/${username}/chat`}
-							icon={
-								<Image
-									src={avatar || botImage}
-									alt={`${name}'s avatar`}
-									width={69}
-									height={69}
-									className="rounded-full dark:brightness-90"
-								/>
-							}
-						/>
-					);
+			if (data) {
+				const { avatar, username } = data;
+
+				if (username && !otherUsers.has(username)) {
+					SidebarIcons.push({ avatar, username });
 					otherUsers.add(username);
 				}
 			}
 		}
 	}
+
+	// if (data) {
+	// 	let otherId;
+	// 	for (let { recipient, sender } of data) {
+	// 		otherId = recipient === curUserId ? sender : recipient;
+
+	// 		const {
+	// 			data: { name, avatar, username },
+	// 			error,
+	// 		} = await supabase
+	// 			.from("profiles")
+	// 			.select("avatar, username")
+	// 			.eq("id", otherId)
+	// 			.single();
+
+	// 		if (error) {
+	// 			console.error(error);
+	// 			continue;
+	// 		} else {
+	// 			if (!otherUsers.has(username)) {
+	// 				SidebarIcons.push(
+	// 					<SideBarIcon
+	// 						key={username}
+	// 						text={username}
+	// 						href={`/user/${username}/chat`}
+	// 						icon={
+	// 							<Image
+	// 								src={avatar || botImage}
+	// 								alt={`${name}'s avatar`}
+	// 								width={69}
+	// 								height={69}
+	// 								className="rounded-full dark:brightness-90"
+	// 							/>
+	// 						}
+	// 					/>
+	// 				);
+	// 				otherUsers.add(username);
+	// 			}
+	// 		}
+	// 	}
+	// }
 
 	return (
 		<div
@@ -80,7 +101,14 @@ const SideBar = async () => {
 			<Divider />
 
 			<div className="overflow-y-auto w-full flex flex-col items-center overflow-x-hidden scrollbar-hide">
-				{<SideChats serverChats={SidebarIcons} />}
+				{
+					// @ts-ignore
+					<SideChats
+						serverChats={SidebarIcons}
+						otherUsers={Array.from(otherUsers)}
+						curUserId={curUserId}
+					/>
+				}
 			</div>
 
 			<Divider />
