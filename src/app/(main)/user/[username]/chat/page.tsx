@@ -3,8 +3,7 @@ import "server-only";
 import { notFound } from "next/navigation";
 import { createClient } from "@/utils/supa-server";
 
-import Messages from "./Messages";
-import Input from "./Input";
+import MessagesProvider from "./MessagesProvider";
 import getUserId from "@/utils/get-user-id";
 
 export const revalidate = 0;
@@ -35,7 +34,7 @@ export default async function Chat({
 		.or(
 			`and(sender.eq.${curUserID},recipient.eq.${recipientId}),and(sender.eq.${recipientId},recipient.eq.${curUserID})`
 		)
-		.order("created_at", { ascending: true });
+		.order("created_at", { ascending: false });
 	const curUserPromise = supabase
 		.from("profiles")
 		.select()
@@ -54,9 +53,10 @@ export default async function Chat({
 	]);
 
 	return (
-		<div className="h-full w-full overflow-hidden">
-			<Messages curUserID={curUserID} messagesInfo={messagesInfo} />
-			<Input curUserID={curUserID} recipientId={recipientId} />
-		</div>
+		<MessagesProvider
+			curUserId={curUserID}
+			recipientId={recipientId}
+			messagesInfo={messagesInfo}
+		/>
 	);
 }

@@ -1,13 +1,16 @@
-import { BsGearFill } from "react-icons/bs";
-import { HomeIcon } from "@heroicons/react/24/solid";
+import "server-only";
 
 import Link from "next/link";
 import Image from "next/image";
-import { createClient } from "@/utils/supa-server";
+import { BsGearFill } from "react-icons/bs";
+import { HomeIcon } from "@heroicons/react/24/solid";
 import botImage from "@public/bot.svg";
+import { createClient } from "@/utils/supa-server";
 import getUserId from "@/utils/get-user-id";
+import SideChats from "./SideChats";
+import SideBarIcon from "./SideBarIcon";
 
-export const revalidate = 100;
+export const revalidate = 0;
 
 const SideBar = async () => {
 	const supabase = createClient();
@@ -75,19 +78,16 @@ const SideBar = async () => {
 				href="/"
 			/>
 			<Divider />
-			{SidebarIcons}
+
+			<div className="overflow-y-auto w-full flex flex-col items-center overflow-x-hidden scrollbar-hide">
+				{<SideChats serverChats={SidebarIcons} />}
+			</div>
+
 			<Divider />
 			<SideBarIcon icon={<BsGearFill size="32" />} text="Settings" />
 		</div>
 	);
 };
-
-const SideBarIcon = ({ icon, text = "tooltip 💡", href = "/" }) => (
-	<Link className="sidebar-icon group" href={href}>
-		{icon}
-		<span className="sidebar-tooltip group-hover:scale-100">{text}</span>
-	</Link>
-);
 
 const Divider = () => <hr className="sidebar-hr" />;
 

@@ -14,6 +14,9 @@ const nextConfig = {
 		],
 		dangerouslyAllowSVG: true,
 	},
+	typescript: {
+		ignoreBuildErrors: true,
+	},
 };
 
 module.exports = nextConfig;

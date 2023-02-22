@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import getExtension from "@/utils/get-extension";
@@ -41,7 +41,6 @@ export default function Message({
 	showProfile: boolean;
 	lastMessageDate: string | null;
 }) {
-	const ref = useRef<HTMLDivElement>(null);
 	const [attachments, setAttachments] = useState<JSX.Element[]>([]);
 	const [attachmentIds] = useState(new Set<string>());
 	const { supabase } = useSupabase();

@@ -46,7 +46,8 @@ export default function Auth() {
 	const emailRef = useRef<InputRef>(null);
 	const PWRef = useRef<InputRef>(null);
 
-	const darkTheme = window.matchMedia("(prefers-color-scheme: dark)").matches;
+	const darkTheme =
+		window && window.matchMedia("(prefers-color-scheme: dark)").matches;
 
 	const formSubmitHandler = async (event: React.SyntheticEvent) => {
 		event.preventDefault();

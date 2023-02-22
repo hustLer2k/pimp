@@ -6,15 +6,19 @@ import { v4 } from "uuid";
 import getExtension from "@/utils/get-extension";
 import { roboto_mono } from "@/components/ui/fonts";
 import { XMarkIcon } from "@heroicons/react/24/outline";
+import { Database } from "@/lib/database.types";
+type Message = Database["public"]["Tables"]["messages"]["Row"];
 
 const DEFAULT_HEIGHT = "42px";
 
 export default function Input({
 	curUserID,
 	recipientId,
+	onSendMessage,
 }: {
 	curUserID: string;
 	recipientId: string;
+	onSendMessage: (message: Message) => void;
 }) {
 	const { supabase } = useSupabase();
 
@@ -44,7 +48,7 @@ export default function Input({
 
 			inputRef.current?.focus();
 		});
-	}, []);
+	}, [recipientId, supabase]);
 
 	async function sendMessage(payload: string) {
 		if (!payload) return;
@@ -58,19 +62,27 @@ export default function Input({
 					cacheControl: "31536000", // 1 year
 				});
 
-			console.error(error);
 			if (data) attachmentsPaths.push(data.path);
 		}
 
-		let { error } = await supabase.from("messages").insert({
+		let message = {
 			sender: curUserID,
 			recipient: recipientId,
 			payload,
 			attachments: attachmentsPaths.length ? attachmentsPaths : null,
-		});
+		};
+		let { error } = await supabase.from("messages").insert(message);
 
 		error && console.error(error);
-		if (!error) setAttachmentNames([]);
+		if (!error) {
+			setAttachmentNames([]);
+			setAttachments([]);
+			onSendMessage({
+				...message,
+				created_at: new Date().toISOString(),
+				id: v4(),
+			});
+		}
 	}
 
 	function keyUpHandler(e: React.KeyboardEvent<HTMLTextAreaElement>) {
@@ -106,10 +118,6 @@ export default function Input({
 				if (item.kind === "file") {
 					const file = item.getAsFile();
 					if (!file) return;
-
-					console.log(
-						`… file[${i}].name = ${file?.name} ${file?.type}`
-					);
 
 					setAttachments((prev) => [...prev, file]);
 					setAttachmentNames((prev) => [...prev, file.name]);
