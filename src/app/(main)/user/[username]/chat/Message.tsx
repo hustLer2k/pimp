@@ -100,8 +100,8 @@ export default function Message({
 						<Link
 							key={attachment}
 							href={dataURL}
-							download={attachment + getExtension(attachment)}
-							className="my-3 block"
+							download={attachment}
+							target="_blank"
 						>
 							{content}
 						</Link>
