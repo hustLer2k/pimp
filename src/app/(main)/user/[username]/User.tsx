@@ -3,27 +3,35 @@ import Link from "next/link";
 import Avatar from "@/components/ui/Avatar";
 
 export default function Example({
+	curUsername,
 	name,
 	username,
 	avatar,
 }: {
+	curUsername: string;
 	name: string | null;
 	username: string | null;
 	avatar: string | null;
 }) {
 	let chatContent;
+
+	let viewingThemselves = curUsername === username;
 	chatContent = (
 		<Link
 			className="inline-flex text-lg font-bold items-center justify-center text-purple-800 dark:text-white"
 			href={`/user/${username}/chat`}
 		>
-			Chat
-			<span className="ml-1">
-				<ChatBubbleOvalLeftEllipsisIcon
-					className="w-6 h-6"
-					aria-hidden="true"
-				/>{" "}
-			</span>
+			{!viewingThemselves && (
+				<>
+					Chat
+					<span className="ml-1">
+						<ChatBubbleOvalLeftEllipsisIcon
+							className="w-6 h-6"
+							aria-hidden="true"
+						/>{" "}
+					</span>
+				</>
+			)}
 		</Link>
 	);
 

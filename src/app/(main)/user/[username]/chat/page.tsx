@@ -25,7 +25,7 @@ export default async function Chat({
 		.single();
 
 	const recipientId = data?.id;
-	if (!recipientId) return notFound();
+	if (!recipientId || curUserID === recipientId) return notFound();
 
 	// messsenges info
 	const messagesPromise = supabase

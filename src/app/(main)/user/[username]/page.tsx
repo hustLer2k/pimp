@@ -1,3 +1,5 @@
+import "server-only";
+
 import { createClient } from "@/utils/supa-server";
 import { redirect } from "next/navigation";
 import User from "./User";
@@ -14,31 +16,22 @@ export default async function UserPage({
 	} = await supabase.auth.getSession();
 	if (!session) redirect("/login");
 
+	const { data: curUserData } = await supabase
+		.from("profiles")
+		.select("username")
+		.eq("id", session.user.id)
+		.single();
+
+	const curUsername = curUserData?.username;
+
 	const { data, error } = await supabase
 		.from("profiles")
 		.select()
 		.eq("username", params.username)
 		.single();
 
-	if (error || !data) throw new Error(error && "Something went wrong.");
+	if (error || !data || !curUsername)
+		throw new Error(error! && "Something went wrong.");
 
-	return <User {...data} />;
+	return <User curUsername={curUsername} {...data} />;
 }
-
-// export async function generateStaticParams() {
-// 	const supa_key = process.env.SUPABASE_KEY;
-// 	if (!supa_key) {
-// 		throw new Error("Specify the supabase key");
-// 	}
-
-// 	const supabase = createClient(
-// 		"https://tynmutxkvlatvpubyvrx.supabase.co",
-// 		supa_key
-// 	);
-
-// 	const { data, error } = await supabase.from("profiles").select("username");
-// 	console.error(error ?? error);
-// 	console.log(data);
-
-// 	return data;
-// }
