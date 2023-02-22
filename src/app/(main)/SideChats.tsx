@@ -1,9 +1,8 @@
 "use client";
 import { useState, useEffect } from "react";
-import Image from "next/image";
 import { useSupabase } from "@/components/store/supa-provider";
 import SideBarIcon from "./SideBarIcon";
-import botAvatar from "@public/bot.svg";
+import Avatar from "@/components/ui/Avatar";
 
 type ChatInfo = { avatar: string | null; username: string };
 import { Database } from "@/lib/database.types";
@@ -19,7 +18,7 @@ export default function SideChats({
 	curUserId: string;
 }) {
 	const [chats, setChats] = useState(serverChats);
-	const [otherUsers, setOtherUsers] = useState(new Set(serverOtherUsers));
+	const [otherUsers] = useState(new Set(serverOtherUsers));
 	const { supabase } = useSupabase();
 
 	const SidebarIcons: JSX.Element[] = [];
@@ -29,15 +28,7 @@ export default function SideChats({
 				key={username}
 				text={username}
 				href={`/user/${username}/chat`}
-				icon={
-					<Image
-						src={avatar || botAvatar}
-						alt={`${username}'s avatar`}
-						width={69}
-						height={69}
-						className="rounded-full dark:brightness-90"
-					/>
-				}
+				icon={<Avatar username={username} avatar={avatar} />}
 			/>
 		)
 	);
@@ -85,7 +76,7 @@ export default function SideChats({
 		return () => {
 			supabase.removeChannel(channel);
 		};
-	}, [supabase, curUserId]);
+	}, [supabase, curUserId, otherUsers]);
 
 	return SidebarIcons;
 }

@@ -1,7 +1,6 @@
 import { ChatBubbleOvalLeftEllipsisIcon } from "@heroicons/react/24/outline";
-import Image from "next/image";
 import Link from "next/link";
-import botImage from "@public/bot.svg";
+import Avatar from "@/components/ui/Avatar";
 
 export default function Example({
 	name,
@@ -39,13 +38,11 @@ export default function Example({
 						{username}
 					</p>
 				</div>
-				<Image
+				<Avatar
+					username={username}
+					avatar={avatar}
+					size={100}
 					priority
-					src={avatar || botImage}
-					alt={`${name}'s avatar`}
-					width={100}
-					height={100}
-					className="rounded-full dark:brightness-90"
 				/>
 			</div>
 			<div className="ml-[15vw]">{chatContent}</div>
