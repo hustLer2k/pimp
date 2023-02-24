@@ -3,7 +3,7 @@ import "server-only";
 import { notFound } from "next/navigation";
 import { createClient } from "@/utils/supa-server";
 
-import MessagesProvider from "./MessagesProvider";
+import MessagesProvider from "./components/MessagesProvider";
 import getUserId from "@/utils/get-user-id";
 
 export const revalidate = 0;

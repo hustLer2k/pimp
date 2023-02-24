@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function NotFound() {
 	return (
-		<main className="grid min-h-full place-items-center bg-gray-50 dark:bg-gray-700 py-24 px-6 sm:py-32 lg:px-8">
+		<main className="grid min-h-full place-items-center py-24 px-6 sm:py-32 lg:px-8">
 			<div className="text-center">
 				<p className="text-base font-semibold text-purple-600 dark:text-purple-400">
 					404

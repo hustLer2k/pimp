@@ -37,7 +37,7 @@ export default function Example({
 
 	return (
 		<>
-			<div className="bg-background flex mt-20 sm:mt-4 justify-between pr-[20vw] px-[15vw]">
+			<div className="flex mt-20 sm:mt-4 justify-between pr-[20vw] px-[15vw]">
 				<div className="py-5">
 					<h3 className="text-lg font-medium leading-6 text-gray-900 dark:text-white">
 						{name}

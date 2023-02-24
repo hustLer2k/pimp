@@ -5,20 +5,16 @@ import Avatar from "@/components/ui/Avatar";
 import { FaUserCircle } from "react-icons/fa";
 import Link from "next/link";
 
-const UserCircle = async () => {
+const UserCircle = async ({ userId }: { userId: string | undefined }) => {
 	const supabase = createClient();
-
-	const {
-		data: { session },
-	} = await supabase.auth.getSession();
 
 	let avatar: string | null | undefined;
 	let username: string | null | undefined;
-	if (session) {
+	if (userId) {
 		const { data } = await supabase
 			.from("profiles")
 			.select("avatar, username")
-			.eq("id", session.user.id)
+			.eq("id", userId)
 			.single();
 
 		avatar = data?.avatar;
@@ -31,7 +27,7 @@ const UserCircle = async () => {
 				<Avatar
 					avatar={avatar}
 					username={null}
-					size={30}
+					size={40}
 					classes="top-navigation-icon"
 				/>
 			</Link>
