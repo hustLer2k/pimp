@@ -18,6 +18,7 @@ const UserCircle = async ({ userId }: { userId: string | undefined }) => {
 			.single();
 
 		avatar = data?.avatar;
+		console.log(avatar);
 		username = data?.username;
 	}
 

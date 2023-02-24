@@ -84,7 +84,7 @@ export default function Auth() {
 				<div className="w-full max-w-md space-y-8">
 					<div>
 						<Image
-							src={darkTheme ? logoBlack : logoWhite}
+							src={darkTheme ? logoWhite : logoBlack}
 							alt="Pimp logo"
 							width={300}
 							height={300}

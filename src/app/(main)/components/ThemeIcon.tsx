@@ -6,7 +6,7 @@ import { HiOutlineDesktopComputer } from "react-icons/hi";
 import { useEffect, useState } from "react";
 import { useSupabase } from "@/components/store/supa-provider";
 
-function setDarkmode(darkmode: boolean | number) {
+function setDarkmode(darkmode: boolean) {
 	if (darkmode) document.documentElement.classList.add("dark");
 	else document.documentElement.classList.remove("dark");
 }
@@ -36,7 +36,7 @@ const ThemeIcon = ({
 	const handleMode = () => {
 		const newTheme: 0 | 1 | 2 = ((themeMode + 1) % 3) as 0 | 1 | 2;
 
-		setTheme((themeMode) => newTheme);
+		setTheme(newTheme);
 
 		if (userId) {
 			if (timer) clearTimeout(timer);
@@ -47,7 +47,7 @@ const ThemeIcon = ({
 						.from("profiles")
 						.update({ darkmode: newTheme })
 						.eq("id", userId)
-						.then(),
+						.then(() => console.log(newTheme)),
 				5000
 			);
 		}
@@ -55,7 +55,7 @@ const ThemeIcon = ({
 
 	useEffect(() => {
 		const darkOn =
-			(themeMode !== 0 ? themeMode === 1 : null) ||
+			(themeMode !== 0 ? themeMode === 1 : null) ??
 			window.matchMedia("(prefers-color-scheme: dark)").matches;
 
 		if (themeMode === 0) {

@@ -9,8 +9,6 @@
 		"lint": "next lint"
 	},
 	"dependencies": {
-		"@dicebear/collection": "^5.3.2",
-		"@dicebear/core": "^5.3.2",
 		"@headlessui/react": "^1.7.10",
 		"@heroicons/react": "^2.0.15",
 		"@next/font": "^13.1.6",
@@ -20,6 +18,7 @@
 		"@types/react": "^18.0.28",
 		"@types/react-dom": "^18.0.11",
 		"client-only": "^0.0.1",
+		"dicebear-browser": "^1.0.0",
 		"encoding": "^0.1.13",
 		"eslint": "8.34.0",
 		"eslint-config-next": "13.1.6",

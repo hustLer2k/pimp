@@ -23,7 +23,9 @@ export default async function RootLayout({
 	return (
 		<html
 			lang="en"
-			className={sans.className + " h-full bg-gray-50 dark:bg-gray-700"}
+			className={
+				sans.className + " h-full bg-gray-50 dark:bg-gray-700 dark"
+			}
 		>
 			<head></head>
 			<body className="h-full">

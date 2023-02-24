@@ -1,9 +1,9 @@
 "use client";
-import { createAvatar } from "@dicebear/core";
-import * as avatars from "@dicebear/collection";
+import { createAvatar } from "dicebear-browser/core";
+import * as avatars from "dicebear-browser/collection/lib/index";
 import { ArrowRightIcon, ArrowLeftIcon } from "@heroicons/react/24/solid";
 import { PhotoIcon } from "@heroicons/react/24/outline";
-import Avatar from "@/components/ui/Avatar";
+import AvatarComponent from "@/components/ui/Avatar";
 import { useEffect, useState, useRef } from "react";
 import botImage from "@public/bot.svg";
 
@@ -103,7 +103,11 @@ export default function Previewer({
 					}
 				/>
 				<div>
-					<Avatar username={null} avatar={avatar} size={128} />
+					<AvatarComponent
+						username={null}
+						avatar={avatar}
+						size={128}
+					/>
 					<button
 						type="button"
 						onClick={() => inputRef.current?.click()}

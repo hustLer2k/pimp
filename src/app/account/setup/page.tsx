@@ -115,7 +115,7 @@ export default function AccountSetup() {
 
 	return (
 		<form
-			className="flex flex-col min-h-full items-center py-10 lg:py-40"
+			className="flex flex-col min-h-full items-center py-10 lg:py-40 bg-inherit bg-gray-50 dark:bg-gray-700"
 			onSubmit={submitHandler}
 		>
 			<div className="w-full max-w-md space-y-9">
