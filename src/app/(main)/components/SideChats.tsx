@@ -34,8 +34,6 @@ export default function SideChats({
 	);
 
 	useEffect(() => {
-		console.log(228);
-
 		const channel = supabase
 			.channel("*")
 			.on(
@@ -47,7 +45,6 @@ export default function SideChats({
 				},
 				async (payload: { new: Conversation }) => {
 					let conversation = payload.new;
-					console.log(conversation);
 
 					if (!conversation.participants_ids.includes(curUserId))
 						return;

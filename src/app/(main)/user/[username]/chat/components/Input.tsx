@@ -20,7 +20,7 @@ export default function Input({
 	curUserID: string;
 	recipientId: string;
 	onSendMessage: (message: Message) => void;
-	conversationId: string;
+	conversationId: string | null | undefined;
 }) {
 	const { supabase } = useSupabase();
 
@@ -70,9 +70,24 @@ export default function Input({
 				if (data) attachmentsPaths.push(data.path);
 			}
 
+			if (!conversationId) {
+				let { data, error } = await supabase
+					.from("conversations")
+					.insert({
+						participants_ids: [curUserID, recipientId],
+						creator_id: curUserID,
+					})
+					.select("id")
+					.single();
+
+				error && console.error(error);
+
+				conversationId = data?.id;
+			}
+
 			let message = {
 				sender: curUserID,
-				conversation_id: conversationId,
+				conversation_id: conversationId!,
 				payload,
 				attachments: attachmentsPaths.length ? attachmentsPaths : null,
 			};

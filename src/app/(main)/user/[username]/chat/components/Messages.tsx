@@ -25,7 +25,7 @@ export default function Messages({
 		});
 	}, [messages]);
 
-	if (messages?.length == 0) {
+	if (!messages?.length) {
 		messagesJSX = (
 			<h1 className="text-center text-3xl text-gray-600 tracking-tight h-[calc(100%-4rem)] pt-[40vh]">
 				No messages yet

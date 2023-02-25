@@ -37,34 +37,16 @@ export default async function Chat({
 	error && console.error(error);
 
 	if (error) throw new Error(error.message);
-
-	if (!data?.[0]) {
-		({ data, error } = await supabase
-			.from("conversations")
-			.insert({
-				participants_ids: [curUserID, recipientId],
-				creator_id: curUserID,
-			})
-			.select("id")
-			.single());
-
-		error && console.error(error);
-
-		conversation_id = data?.id;
-	} else {
-		conversation_id = data[0]?.id;
-	}
-
-	if (!conversation_id) {
-		throw new Error("Conversation id is null");
-	}
+	conversation_id = data?.[0]?.id;
 
 	// messsenges info
-	const messagesPromise = supabase
-		.from("messages")
-		.select()
-		.eq("conversation_id", conversation_id)
-		.order("created_at", { ascending: false });
+	const messagesPromise = conversation_id
+		? supabase
+				.from("messages")
+				.select()
+				.eq("conversation_id", conversation_id)
+				.order("created_at", { ascending: false })
+		: Promise.resolve({ data: null, error: null });
 
 	const curUserPromise = supabase
 		.from("profiles")

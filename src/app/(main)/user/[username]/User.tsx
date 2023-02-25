@@ -1,3 +1,5 @@
+import "server-only";
+
 import { ChatBubbleOvalLeftEllipsisIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import Avatar from "@/components/ui/Avatar";
@@ -37,7 +39,7 @@ export default function Example({
 
 	return (
 		<>
-			<div className="flex mt-20 sm:mt-4 justify-between pr-[20vw] px-[15vw]">
+			<div className="flex flex-col md:flex-row mt-20 sm:mt-4 justify-between pr-[20vw] px-[15vw] items-center">
 				<div className="py-5">
 					<h3 className="text-lg font-medium leading-6 text-gray-900 dark:text-white">
 						{name}
@@ -53,7 +55,7 @@ export default function Example({
 					priority
 				/>
 			</div>
-			<div className="ml-[15vw]">{chatContent}</div>
+			<div className="ml-[15vw] mt-10 md:mt-2">{chatContent}</div>
 		</>
 	);
 }

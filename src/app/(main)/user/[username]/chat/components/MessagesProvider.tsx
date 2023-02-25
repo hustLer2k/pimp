@@ -19,11 +19,11 @@ export default function MessagesProvider({
 	curUserId: string;
 	recipientId: string;
 	messagesInfo: [
-		PostgrestSingleResponse<Message[]>,
+		PostgrestSingleResponse<Message[]> | { data: null; error: null },
 		PostgrestSingleResponse<User>,
 		PostgrestSingleResponse<User>
 	];
-	conversationId: string;
+	conversationId: string | null | undefined;
 }) {
 	const { supabase } = useSupabase();
 
@@ -32,7 +32,7 @@ export default function MessagesProvider({
 		{ data: curUser, error: curUserError },
 		{ data: recipientUser, error: recipientUserError },
 	] = messagesInfo;
-	const [messages, setMessages] = useState(serverMessages);
+	const [messages, setMessages] = useState(serverMessages || []);
 
 	if (messagesError) {
 		console.error(messagesError);
