@@ -11,6 +11,11 @@ const nextConfig = {
 				protocol: "https",
 				hostname: "tynmutxkvlatvpubyvrx.supabase.co",
 			},
+
+			{
+				protocol: "https",
+				hostname: "tenor.com",
+			},
 		],
 		dangerouslyAllowSVG: true,
 	},

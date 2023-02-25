@@ -14,6 +14,7 @@ export default function MessagesProvider({
 	curUserId,
 	recipientId,
 	messagesInfo,
+	conversationId,
 }: {
 	curUserId: string;
 	recipientId: string;
@@ -22,6 +23,7 @@ export default function MessagesProvider({
 		PostgrestSingleResponse<User>,
 		PostgrestSingleResponse<User>
 	];
+	conversationId: string;
 }) {
 	const { supabase } = useSupabase();
 
@@ -31,6 +33,11 @@ export default function MessagesProvider({
 		{ data: recipientUser, error: recipientUserError },
 	] = messagesInfo;
 	const [messages, setMessages] = useState(serverMessages);
+
+	console.log("\nmessages\n");
+	console.log(conversationId);
+	messagesError && messagesError;
+	console.log(serverMessages);
 
 	if (messagesError) {
 		console.error(messagesError);
@@ -77,6 +84,7 @@ export default function MessagesProvider({
 					curUserID={curUserId}
 					recipientId={recipientId}
 					onSendMessage={sendMessageHandler}
+					conversationId={conversationId}
 				/>
 			</div>
 		</>

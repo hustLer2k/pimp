@@ -15,10 +15,12 @@ export default function Input({
 	curUserID,
 	recipientId,
 	onSendMessage,
+	conversationId,
 }: {
 	curUserID: string;
 	recipientId: string;
 	onSendMessage: (message: Message) => void;
+	conversationId: string;
 }) {
 	const { supabase } = useSupabase();
 
@@ -82,6 +84,7 @@ export default function Input({
 				setAttachments([]);
 				onSendMessage({
 					...message,
+					conversation_id: conversationId,
 					created_at: new Date().toISOString(),
 					id: v4(),
 				});

@@ -1,8 +1,15 @@
+import Image from "next/image";
+import topG from "@public/andrew-tate-top-g.gif";
+
 function App() {
 	return (
-		<h2 className="text-center text-3xl text-purple-300 mt-[40vh]">
-			Hello doto
-		</h2>
+		<div className="flex justify-center items-center h-full p-10">
+			<Image
+				src={topG}
+				alt="TOP-G"
+				className="w-full h-full dark:brightness-90"
+			/>
+		</div>
 	);
 }
 

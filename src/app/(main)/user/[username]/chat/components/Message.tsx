@@ -86,6 +86,7 @@ export default function Message({
 							src={dataURL}
 							width={228}
 							height={228}
+							className="w-auto h-auto"
 							alt="Attached image"
 							placeholder="empty"
 							loading="eager"
