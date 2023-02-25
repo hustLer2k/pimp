@@ -23,7 +23,7 @@
 		"eslint": "8.34.0",
 		"eslint-config-next": "13.1.6",
 		"md-block": "^0.0.1",
-		"next": "^13.1.7-canary.27",
+		"next": "^13.2.2-canary.0",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
 		"react-icons": "^4.7.1",
