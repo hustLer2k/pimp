@@ -6,7 +6,7 @@ import Avatar from "@/components/ui/Avatar";
 
 type ChatInfo = { avatar: string | null; username: string };
 import { Database } from "@/lib/database.types";
-type Message = Database["public"]["Tables"]["messages"]["Row"];
+type Conversation = Database["public"]["Tables"]["conversations"]["Row"];
 
 export default function SideChats({
 	serverChats,
@@ -34,6 +34,8 @@ export default function SideChats({
 	);
 
 	useEffect(() => {
+		console.log(228);
+
 		const channel = supabase
 			.channel("*")
 			.on(
@@ -41,15 +43,18 @@ export default function SideChats({
 				{
 					event: "INSERT",
 					schema: "public",
-					table: "messages",
-					filter: `recipient=eq.${curUserId}`,
+					table: "conversations",
 				},
-				async (payload: { new: Message }) => {
-					let message = payload.new;
-					let otherId =
-						message.sender === curUserId
-							? message.recipient
-							: message.sender;
+				async (payload: { new: Conversation }) => {
+					let conversation = payload.new;
+					console.log(conversation);
+
+					if (!conversation.participants_ids.includes(curUserId))
+						return;
+
+					let otherId = conversation.participants_ids.find(
+						(participantId) => participantId != curUserId
+					)!;
 
 					if (!otherUsers.has(otherId)) {
 						const { data } = await supabase
@@ -76,7 +81,7 @@ export default function SideChats({
 		return () => {
 			supabase.removeChannel(channel);
 		};
-	}, [supabase, curUserId, otherUsers]);
+	}, []);
 
 	return SidebarIcons;
 }

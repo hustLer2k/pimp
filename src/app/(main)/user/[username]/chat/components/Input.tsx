@@ -72,7 +72,7 @@ export default function Input({
 
 			let message = {
 				sender: curUserID,
-				recipient: recipientId,
+				conversation_id: conversationId,
 				payload,
 				attachments: attachmentsPaths.length ? attachmentsPaths : null,
 			};
@@ -84,7 +84,6 @@ export default function Input({
 				setAttachments([]);
 				onSendMessage({
 					...message,
-					conversation_id: conversationId,
 					created_at: new Date().toISOString(),
 					id: v4(),
 				});

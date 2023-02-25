@@ -34,11 +34,6 @@ export default function MessagesProvider({
 	] = messagesInfo;
 	const [messages, setMessages] = useState(serverMessages);
 
-	console.log("\nmessages\n");
-	console.log(conversationId);
-	messagesError && messagesError;
-	console.log(serverMessages);
-
 	if (messagesError) {
 		console.error(messagesError);
 		throw new Error("An error occured");
@@ -53,20 +48,24 @@ export default function MessagesProvider({
 					event: "INSERT",
 					schema: "public",
 					table: "messages",
-					filter: `sender=eq.${recipientId}`,
+					filter: `conversation_id=eq.${conversationId}`,
 				},
-				(payload) =>
-					setMessages((prevMessages) => [
-						payload.new as Message,
-						...prevMessages!,
-					])
+				(payload) => {
+					const newMessage = payload.new as Message;
+
+					if (newMessage.sender !== curUserId)
+						setMessages((prevMessages) => [
+							newMessage,
+							...prevMessages!,
+						]);
+				}
 			)
 			.subscribe();
 
 		return () => {
 			supabase.removeChannel(channel);
 		};
-	}, [supabase, messages, recipientId]);
+	}, []);
 
 	const sendMessageHandler = async (message: Message) => {
 		setMessages((prevMessages) => [message, ...prevMessages!]);

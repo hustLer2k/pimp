@@ -1,9 +1,7 @@
 import "server-only";
 
-import Image from "next/image";
 import { BsGearFill } from "react-icons/bs";
 import { HomeIcon } from "@heroicons/react/24/solid";
-import botImage from "@public/bot.svg";
 import { createClient } from "@/utils/supa-server";
 import getUserId from "@/utils/get-user-id";
 import SideChats from "./SideChats";
@@ -18,17 +16,18 @@ const SideBar = async () => {
 	if (!curUserId) throw new Error("User is not logged in");
 
 	let { data } = await supabase
-		.from("messages")
-		.select("recipient, sender")
-		.or(`sender.eq.${curUserId},recipient.eq.${curUserId}`);
+		.from("conversations")
+		.select("participants_ids")
+		.contains("participants_ids", [curUserId]);
 
 	const SidebarIcons: { avatar: string | null; username: string }[] = [];
 	const otherUsers = new Set<string>();
 
 	if (data) {
-		let otherId;
-		for (let { recipient, sender } of data) {
-			otherId = recipient === curUserId ? sender : recipient;
+		for (let { participants_ids } of data) {
+			let otherId = participants_ids.find(
+				(participantId) => participantId != curUserId
+			);
 
 			const { data } = await supabase
 				.from("profiles")

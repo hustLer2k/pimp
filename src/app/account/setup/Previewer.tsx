@@ -10,7 +10,7 @@ import botImage from "@public/bot.svg";
 import { Avatar } from "./page";
 import getExtension from "@/utils/get-extension";
 
-const ACCEPTED_FILETYPES = new Set(["svg", "png", "jpg", "jpeg", "gif"]);
+const ACCEPTED_FILETYPES = new Set([".svg", ".png", ".jpg", ".jpeg", ".gif"]);
 const ARROW_CLASSES =
 	"w-8 h-8 text-gray-500 my-auto mx-8 cursor-pointer hover:text-purple-700";
 
@@ -64,7 +64,7 @@ export default function Previewer({
 		setAvatar(ava.toDataUriSync());
 		onAvatarChange({
 			payload: encoder.encode(ava.toString()),
-			extension: "svg",
+			extension: ".svg",
 		});
 	}, [seed, avatarIndex, onAvatarChange]);
 

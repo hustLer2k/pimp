@@ -76,14 +76,16 @@ export default function AccountSetup() {
 		let userID = await getUserId(supabase);
 		const { payload, extension } = avatar as Avatar;
 
-		const bucketPath = `${userID}/avatar.${extension}`;
+		const bucketPath = `${userID}/avatar${extension}`;
+		console.log(bucketPath);
+		console.log((payload as File).type);
 
 		const avatarUploadPromise = supabase.storage
 			.from("avatars")
 			.upload(bucketPath, payload, {
 				upsert: true,
 				contentType:
-					extension === "svg"
+					extension === ".svg"
 						? "image/svg+xml"
 						: (payload as File).type,
 			});
@@ -113,64 +115,76 @@ export default function AccountSetup() {
 		router.replace("/");
 	};
 
+	const darkTheme =
+		window && window.matchMedia("(prefers-color-scheme: dark)").matches;
+
 	return (
-		<form
-			className="flex flex-col min-h-full items-center py-10 lg:py-40 bg-inherit bg-gray-50 dark:bg-gray-700"
-			onSubmit={submitHandler}
+		<div
+			className={`${darkTheme ? "dark" : ""} ${
+				darkTheme ? "bg-gray-700" : "bg-gray-50"
+			} flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8`}
 		>
-			<div className="w-full max-w-md space-y-9">
-				<h2 className="text-gray-900 dark:text-white text-center text-3xl font-bold tracking-tight">
-					Account setup
-				</h2>
+			<form
+				className={`flex flex-col items-center py-10 lg:py-40 bg-inherit`}
+				onSubmit={submitHandler}
+			>
+				<div className="w-full max-w-md space-y-9">
+					<h2 className="text-gray-900 dark:text-white text-center text-3xl font-bold tracking-tight">
+						Account setup
+					</h2>
 
-				<Input
-					label="Username (unique identifier). $ + = - _ . characters are allowed"
-					predicate={usernameValidator}
-					labelVisible={true}
-					inputOptions={{
-						placeholder: "Between 6 and 22 characters",
-						minLength: 6,
-						className: "rounded dark:bg-gray-300",
-						maxLength: 22,
-					}}
-					ref={usernameRef}
-				/>
+					<Input
+						label="Username (unique identifier). $ + = - _ . characters are allowed"
+						predicate={usernameValidator}
+						labelVisible={true}
+						inputOptions={{
+							placeholder: "Between 6 and 22 characters",
+							minLength: 6,
+							className: "rounded dark:bg-gray-300",
+							maxLength: 22,
+						}}
+						ref={usernameRef}
+					/>
 
-				<Input
-					label="Name. Only letters are allowed"
-					predicate={nameValidator}
-					labelVisible={true}
-					inputOptions={{
-						placeholder: "Not less than 2 characters",
-						minLength: 2,
-						onChange: (event) => setName(event.target.value),
-						maxLength: 100,
-						className: "rounded dark:bg-gray-300",
-					}}
-					ref={nameRef}
+					<Input
+						label="Name. Only letters are allowed"
+						predicate={nameValidator}
+						labelVisible={true}
+						inputOptions={{
+							placeholder: "Not less than 2 characters",
+							minLength: 2,
+							onChange: (event) => setName(event.target.value),
+							maxLength: 100,
+							className: "rounded dark:bg-gray-300",
+						}}
+						ref={nameRef}
+					/>
+					{error && (
+						<p className="text-sm text-rose-600 font-mono tracking-tight font-semibold text-center">
+							{error}
+						</p>
+					)}
+				</div>
+
+				<Previewer
+					seed={name.trim()}
+					onAvatarChange={handleAvatarChange}
 				/>
-				{error && (
-					<p className="text-sm text-rose-600 font-mono tracking-tight font-semibold text-center">
-						{error}
-					</p>
+				<p className="text-center text-small text-purple-700 dark:text-purple-300 font-mono font-semibold mb-2 tracking-tight">
+					Accepted filetypes: svg, jpg, jpeg, png, gif
+				</p>
+
+				{isLoading ? (
+					<LoadingSpinner />
+				) : (
+					<button
+						type="submit"
+						className="bg-purple-600 dark:bg-purple-500 border-transparent text-white rounded-md border py-2 px-4 text-sm font-medium hover:bg-purple-700 dark:hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+					>
+						Proceed
+					</button>
 				)}
-			</div>
-
-			<Previewer seed={name.trim()} onAvatarChange={handleAvatarChange} />
-			<p className="text-center text-small text-purple-700 dark:text-purple-300 font-mono font-semibold mb-2 tracking-tight">
-				Accepted filetypes: svg, jpg, jpeg, png, gif
-			</p>
-
-			{isLoading ? (
-				<LoadingSpinner />
-			) : (
-				<button
-					type="submit"
-					className="bg-purple-600 dark:bg-purple-500 border-transparent text-white rounded-md border py-2 px-4 text-sm font-medium hover:bg-purple-700 dark:hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
-				>
-					Proceed
-				</button>
-			)}
-		</form>
+			</form>
+		</div>
 	);
 }

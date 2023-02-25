@@ -21,12 +21,7 @@ export default async function RootLayout({
 	} = await supabase.auth.getSession();
 
 	return (
-		<html
-			lang="en"
-			className={
-				sans.className + " h-full bg-gray-50 dark:bg-gray-700 dark"
-			}
-		>
+		<html lang="en" className={sans.className + " h-full"}>
 			<head></head>
 			<body className="h-full">
 				<SupabaseProvider>
