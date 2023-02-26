@@ -27,7 +27,7 @@ export default function SideChats({
 			<SideBarIcon
 				key={username}
 				text={username}
-				href={`/user/${username}/chat`}
+				href={`/${username}/chat`}
 				icon={<Avatar username={username} avatar={avatar} />}
 			/>
 		)

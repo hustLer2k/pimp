@@ -16,28 +16,42 @@ export default async function Chat({
 	const supabase = createClient();
 
 	const curUserID = await getUserId(supabase);
-	if (!curUserID) return;
+	if (!curUserID) return notFound();
 
-	let data, error;
+	let data,
+		error,
+		conversation_id: string | null | undefined = null,
+		recipientId: string | null | undefined = null;
 	({ data } = await supabase
-		.from("profiles")
-		.select("id")
-		.eq("username", params.username)
-		.single());
-
-	const recipientId = data?.id;
-	if (!recipientId || curUserID === recipientId) return notFound();
-
-	let conversation_id: string | null | undefined = null;
-	({ data, error } = await supabase
 		.from("conversations")
 		.select("id")
-		.contains("participants_ids", [curUserID, recipientId]));
+		.eq("id", params.username)
+		.single());
 
-	error && console.error(error);
+	console.log(data);
 
-	if (error) throw new Error(error.message);
-	conversation_id = data?.[0]?.id;
+	if (data?.id) {
+		conversation_id = data.id;
+	} else {
+		({ data } = await supabase
+			.from("profiles")
+			.select("id")
+			.eq("username", params.username)
+			.single());
+
+		recipientId = data?.id;
+		if (!recipientId || curUserID === recipientId) return notFound();
+
+		({ data, error } = await supabase
+			.from("conversations")
+			.select("id")
+			.contains("participants_ids", [curUserID, recipientId]));
+
+		error && console.error(error);
+
+		if (error) throw new Error(error.message);
+		conversation_id = data?.[0]?.id;
+	}
 
 	// messsenges info
 	const messagesPromise = conversation_id
@@ -68,7 +82,7 @@ export default async function Chat({
 	return (
 		<MessagesProvider
 			curUserId={curUserID}
-			recipientId={recipientId}
+			recipientId={recipientId!}
 			messagesInfo={messagesInfo}
 			conversationId={conversation_id}
 		/>

@@ -20,6 +20,7 @@ export default async function Chat({
 		.from("conversations")
 		.select()
 		.eq("creator_id", curId)
+		.eq("group", true)
 		.not("participants_ids", "cs", `{"${userId}"}`);
 
 	console.log(data);
@@ -37,7 +38,7 @@ export default async function Chat({
 		<div
 			className={`${roboto_mono.className} font-semibold tracking-tight ml-[15vw] text-purple-800 dark:text-white`}
 		>
-			<Link href={`/user/${username}/chat`}>
+			<Link href={`/${username}/chat`}>
 				Chat
 				<span className="mx-1 inline-block">
 					<ChatBubbleOvalLeftEllipsisIcon className="w-6 h-6 translate-y-1" />

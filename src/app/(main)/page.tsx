@@ -11,6 +11,7 @@ async function App() {
 	const { data, error } = await supabase
 		.from("conversations")
 		.select()
+		.eq("group", true)
 		.contains("participants_ids", [userId]);
 
 	error && console.error(error);
@@ -23,12 +24,12 @@ async function App() {
 				{data?.map((conversation) => (
 					<div key={conversation.id}>
 						{conversation.participants_ids.map((id) => (
-							<span key={id}>{id}</span>
+							<p key={id}>{id}</p>
 						))}
 
-						{conversation.group && <span>Group</span>}
+						{conversation.group && <p>Group</p>}
 
-						{conversation.group && <span>{conversation.name}</span>}
+						{conversation.group && <p>{conversation.name}</p>}
 					</div>
 				))}
 			</div>

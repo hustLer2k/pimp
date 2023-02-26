@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import getExtension from "@/utils/get-extension";
@@ -42,29 +42,23 @@ export default function Message({
 	showProfile: boolean;
 	lastMessageDate: string | null;
 }) {
-	const ref = useRef<HTMLDivElement>(null);
 	const [attachments, setAttachments] = useState<JSX.Element[]>([]);
 	const [attachmentIds] = useState(new Set<string>());
+	const [userInfo, setUserInfo] = useState<User | null>(null);
+
 	const { supabase } = useSupabase();
 
-	const curUserID = curUser?.id;
-	const sentByCurrentUser = message.sender === curUserID;
-	const userInfo = sentByCurrentUser
-		? (curUser as unknown as User)
-		: (recipientUser as unknown as User);
-
-	const date = DateFormat(new Date(message.created_at));
-	const dateJsx = (
-		<p className="text-sm text-gray-700 dark:text-gray-400">{date}</p>
-	);
-
-	let showDate = true;
-	if (lastMessageDate) {
-		let lastDate = DateFormat(new Date(lastMessageDate));
-		if (lastDate === date) showDate = false;
-	}
-
 	useEffect(() => {
+		supabase
+			.from("profiles")
+			.select()
+			.eq("id", message.sender)
+			.single()
+			.then(({ data, error }) => {
+				if (error) console.error(error);
+				if (data) setUserInfo(data);
+			});
+
 		if (message.attachments) {
 			message.attachments.forEach(async (attachment) => {
 				if (attachmentIds.has(attachment)) return;
@@ -116,15 +110,27 @@ export default function Message({
 				);
 			});
 		}
-	}, [message.attachments]);
+	}, [message.attachments, message.sender]);
+
+	// const curUserID = curUser?.id;
+	// const sentByCurrentUser = message.sender === curUserID;
+	// const userInfo = sentByCurrentUser
+	// 	? (curUser as unknown as User)
+	// 	: (recipientUser as unknown as User);
+
+	const date = DateFormat(new Date(message.created_at));
+	const dateJsx = (
+		<p className="text-sm text-gray-700 dark:text-gray-400">{date}</p>
+	);
+
+	let showDate = true;
+	if (lastMessageDate) {
+		let lastDate = DateFormat(new Date(lastMessageDate));
+		if (lastDate === date) showDate = false;
+	}
 
 	return (
-		<div
-			key={message.id}
-			className={`${
-				message.sender === curUserID ? "self-start" : "self-start"
-			} mb-6 w-4/5 lg:w-3/5 mx-auto`}
-		>
+		<div key={message.id} className="mb-6 w-4/5 lg:w-3/5 mx-auto">
 			{showProfile && (
 				<div className="flex items-center mb-2">
 					<Avatar

@@ -2,8 +2,6 @@
 import { useState, useEffect } from "react";
 import { useSupabase } from "@/components/store/supa-provider";
 
-let first = true;
-
 export default function ProfileDescription({
 	bio,
 	viewingThemselves,
