@@ -1,44 +1,27 @@
 import "server-only";
 
-import { ChatBubbleOvalLeftEllipsisIcon } from "@heroicons/react/24/outline";
-import Link from "next/link";
+import Chat from "./Chat";
 import Avatar from "@/components/ui/Avatar";
 import ProfileDescription from "./ProfileDescription";
 
 export default function Example({
-	curUsername,
+	curId,
 	name,
 	username,
 	avatar,
 	bio,
+	id: userId,
 }: {
-	curUsername: string;
+	curId: string;
 	name: string | null;
 	username: string | null;
 	avatar: string | null;
 	bio: string | null;
+	id: string;
 }) {
-	let chatContent;
+	if (!username) throw new Error("Couldn't fetch username.");
 
-	let viewingThemselves = curUsername === username;
-	chatContent = (
-		<Link
-			className="inline-flex text-lg font-bold items-center justify-center text-purple-800 dark:text-white"
-			href={`/user/${username}/chat`}
-		>
-			{!viewingThemselves && (
-				<>
-					Chat
-					<span className="ml-1">
-						<ChatBubbleOvalLeftEllipsisIcon
-							className="w-6 h-6"
-							aria-hidden="true"
-						/>{" "}
-					</span>
-				</>
-			)}
-		</Link>
-	);
+	let viewingThemselves = curId === userId;
 
 	return (
 		<div className="h-full overflow-auto">
@@ -58,13 +41,17 @@ export default function Example({
 					priority
 				/>
 			</div>
-			<div className="ml-[15vw] mt-10 md:my-2">{chatContent}</div>
+
+			{!viewingThemselves && (
+				// @ts-ignore
+				<Chat username={username} curId={curId} userId={userId} />
+			)}
 
 			{bio !== null && (
 				<ProfileDescription
 					bio={bio}
 					viewingThemselves={viewingThemselves}
-					username={curUsername}
+					userId={userId}
 				/>
 			)}
 		</div>

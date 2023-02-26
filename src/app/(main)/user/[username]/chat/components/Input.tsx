@@ -1,4 +1,5 @@
 "use client";
+
 import { useRef, useEffect, useState } from "react";
 import { useSupabase } from "@/components/store/supa-provider";
 import { FolderArrowDownIcon } from "@heroicons/react/24/outline";
@@ -77,6 +78,7 @@ export default function Input({
 					.insert({
 						participants_ids: [curUserID, recipientId],
 						creator_id: curUserID,
+						group: false,
 					})
 					.select("id")
 					.single();

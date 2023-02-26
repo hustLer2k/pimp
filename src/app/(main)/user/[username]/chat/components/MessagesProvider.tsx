@@ -65,7 +65,7 @@ export default function MessagesProvider({
 		return () => {
 			supabase.removeChannel(channel);
 		};
-	}, []);
+	}, [supabase, curUserId, conversationId]);
 
 	const sendMessageHandler = async (message: Message) => {
 		setMessages((prevMessages) => [message, ...prevMessages!]);

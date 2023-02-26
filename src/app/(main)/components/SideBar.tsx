@@ -15,10 +15,12 @@ const SideBar = async () => {
 	const curUserId = await getUserId(supabase);
 	if (!curUserId) throw new Error("User is not logged in");
 
+	// TODO: add group chats
 	let { data } = await supabase
 		.from("conversations")
 		.select("participants_ids")
-		.contains("participants_ids", [curUserId]);
+		.contains("participants_ids", [curUserId])
+		.eq("group", false);
 
 	const SidebarIcons: { avatar: string | null; username: string }[] = [];
 	const otherUsers = new Set<string>();

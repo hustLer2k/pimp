@@ -42,9 +42,11 @@ export default function SideChats({
 					event: "INSERT",
 					schema: "public",
 					table: "conversations",
+					filter: "group=eq.false",
 				},
 				async (payload: { new: Conversation }) => {
 					let conversation = payload.new;
+					console.log(conversation);
 
 					if (!conversation.participants_ids.includes(curUserId))
 						return;
@@ -78,7 +80,8 @@ export default function SideChats({
 		return () => {
 			supabase.removeChannel(channel);
 		};
-	}, []);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [curUserId, supabase]);
 
 	return SidebarIcons;
 }

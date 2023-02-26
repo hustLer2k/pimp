@@ -7,11 +7,11 @@ let first = true;
 export default function ProfileDescription({
 	bio,
 	viewingThemselves,
-	username,
+	userId,
 }: {
 	bio: string;
 	viewingThemselves: boolean;
-	username: string;
+	userId: string;
 }) {
 	const shown = bio || viewingThemselves;
 	const { supabase } = useSupabase();
@@ -25,11 +25,11 @@ export default function ProfileDescription({
 			const { error } = await supabase
 				.from("profiles")
 				.update({ bio: description.trim() })
-				.eq("username", username);
+				.eq("id", userId);
 		}, 3333);
 
 		return () => clearTimeout(timer);
-	}, [description, supabase, username, viewingThemselves]);
+	}, [description, supabase, userId, viewingThemselves]);
 
 	const changeHandler = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
 		setDescription(e.target.value);
@@ -43,7 +43,7 @@ export default function ProfileDescription({
 				value={description}
 				placeholder="Edit your profile description..."
 				rows={5}
-				className="block w-4/5 md:w-2/5 dark:text-slate-300 text-slate-800 my-5 mx-auto shadow dark:bg-gray-600/60 bg-gray-200 p-4 rounded break-words focus:outline-none focus:ring-0 ring-0 outline-none resize-none border-0"
+				className="mt-10 block w-4/5 md:w-2/5 dark:text-slate-300 text-slate-800 my-5 mx-auto shadow dark:bg-gray-600/60 bg-gray-200 p-4 rounded break-words focus:outline-none focus:ring-0 ring-0 outline-none resize-none border-0"
 			></textarea>
 		);
 	else return null;
