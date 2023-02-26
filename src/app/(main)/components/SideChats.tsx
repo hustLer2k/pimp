@@ -4,31 +4,32 @@ import { useSupabase } from "@/components/store/supa-provider";
 import SideBarIcon from "./SideBarIcon";
 import Avatar from "@/components/ui/Avatar";
 
-type ChatInfo = { avatar: string | null; username: string };
 import { Database } from "@/lib/database.types";
 type Conversation = Database["public"]["Tables"]["conversations"]["Row"];
 
 export default function SideChats({
 	serverChats,
-	otherUsers: serverOtherUsers,
+	chatIds: serverChatIds,
 	curUserId,
 }: {
-	serverChats: ChatInfo[];
-	otherUsers: Array<string>;
+	serverChats: { avatar: string[]; username: string[]; id: string }[];
+	chatIds: Array<string>;
 	curUserId: string;
 }) {
 	const [chats, setChats] = useState(serverChats);
-	const [otherUsers] = useState(new Set(serverOtherUsers));
+	const [chatIds] = useState(new Set(serverChatIds));
 	const { supabase } = useSupabase();
 
 	const SidebarIcons: JSX.Element[] = [];
-	chats.map(({ username, avatar }) =>
+	chats.map(({ username, avatar, id }, i) =>
 		SidebarIcons.push(
 			<SideBarIcon
-				key={username}
-				text={username}
-				href={`/${username}/chat`}
-				icon={<Avatar username={username} avatar={avatar} />}
+				key={i}
+				text={username.join(", ")}
+				href={`/${id}/chat`}
+				icon={username.map((user, i) => (
+					<Avatar key={i} avatar={avatar[i]} username={user} />
+				))}
 			/>
 		)
 	);
@@ -46,33 +47,44 @@ export default function SideChats({
 				},
 				async (payload: { new: Conversation }) => {
 					let conversation = payload.new;
-					console.log(conversation);
 
-					if (!conversation.participants_ids.includes(curUserId))
+					if (
+						!conversation.participants_ids.includes(curUserId) ||
+						chatIds.has(conversation.id)
+					)
 						return;
 
-					let otherId = conversation.participants_ids.find(
-						(participantId) => participantId != curUserId
-					)!;
+					let currentIdIndex =
+						conversation.participants_ids.indexOf(curUserId);
+					let otherIds = conversation.participants_ids.filter(
+						(_, i) => i != currentIdIndex
+					);
 
-					if (!otherUsers.has(otherId)) {
+					let avatars: string[] = [];
+					let usernames: string[] = [];
+
+					for (let otherId of otherIds) {
 						const { data } = await supabase
 							.from("profiles")
 							.select("avatar, username")
 							.eq("id", otherId)
 							.single();
 
-						if (!data || !data.username) return;
-
-						setChats((chats) => [
-							...chats,
-							{
-								avatar: data.avatar,
-								username: data.username!,
-							},
-						]);
-						otherUsers.add(otherId);
+						if (!data || !data.username || !data.avatar) return;
+						avatars.push(data.avatar);
+						usernames.push(data.username);
 					}
+
+					setChats((chats) => [
+						...chats,
+						{
+							avatar: avatars,
+							username: usernames,
+							id: conversation.id,
+						},
+					]);
+
+					chatIds.add(conversation.id);
 				}
 			)
 			.subscribe();

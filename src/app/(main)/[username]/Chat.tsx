@@ -23,7 +23,6 @@ export default async function Chat({
 		.eq("group", true)
 		.not("participants_ids", "cs", `{"${userId}"}`);
 
-	console.log(data);
 	error && console.error(error);
 
 	const { data: curUserData } = await supabase

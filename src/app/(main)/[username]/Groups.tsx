@@ -42,7 +42,6 @@ export default function Groups({
 			setError(errExisting.message);
 			return;
 		}
-		console.log("existing", existing);
 
 		if (existing?.length) {
 			setError(
@@ -63,7 +62,6 @@ export default function Groups({
 			setError(error.message);
 			return;
 		}
-		console.log(data);
 	}
 
 	async function addToConversation(

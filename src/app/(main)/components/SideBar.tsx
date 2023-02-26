@@ -18,33 +18,44 @@ const SideBar = async () => {
 	// TODO: add group chats
 	let { data } = await supabase
 		.from("conversations")
-		.select("participants_ids")
-		.contains("participants_ids", [curUserId])
-		.eq("group", false);
+		.select("participants_ids, id")
+		.contains("participants_ids", [curUserId]);
 
-	const SidebarIcons: { avatar: string | null; username: string }[] = [];
-	const otherUsers = new Set<string>();
+	const SidebarIcons: { avatar: string[]; username: string[]; id: string }[] =
+		[];
+	const chatIds = new Set<string>();
 
 	if (data) {
-		for (let { participants_ids } of data) {
-			let otherId = participants_ids.find(
-				(participantId) => participantId != curUserId
+		for (let { participants_ids, id } of data) {
+			if (chatIds.has(id)) continue;
+
+			let currentIdIndex = participants_ids.indexOf(curUserId);
+			let otherIds = participants_ids.filter(
+				(_, i) => i != currentIdIndex
 			);
 
-			const { data } = await supabase
-				.from("profiles")
-				.select("avatar, username")
-				.eq("id", otherId)
-				.single();
+			let avatars: string[] = [];
+			let usernames: string[] = [];
 
-			if (data) {
-				const { avatar, username } = data;
+			for (let otherId of otherIds) {
+				const { data } = await supabase
+					.from("profiles")
+					.select("avatar, username")
+					.eq("id", otherId)
+					.single();
 
-				if (username && !otherUsers.has(username)) {
-					SidebarIcons.push({ avatar, username });
-					otherUsers.add(username);
+				if (data) {
+					const { avatar, username } = data;
+
+					if (username && avatar) {
+						avatars.push(avatar);
+						usernames.push(username);
+					}
 				}
 			}
+
+			SidebarIcons.push({ avatar: avatars, username: usernames, id });
+			chatIds.add(id);
 		}
 	}
 
@@ -65,7 +76,7 @@ const SideBar = async () => {
 					// @ts-ignore
 					<SideChats
 						serverChats={SidebarIcons}
-						otherUsers={Array.from(otherUsers)}
+						chatIds={Array.from(chatIds)}
 						curUserId={curUserId}
 					/>
 				}

@@ -17,7 +17,6 @@ export default function SupabaseListener({
 			data: { subscription },
 		} = supabase.auth.onAuthStateChange((event, session) => {
 			if (session?.access_token !== serverAccessToken) {
-				console.log("SUPA REFRESH");
 				router.refresh();
 			}
 		});

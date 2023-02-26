@@ -77,8 +77,6 @@ export default function AccountSetup() {
 		const { payload, extension } = avatar as Avatar;
 
 		const bucketPath = `${userID}/avatar${extension}`;
-		console.log(bucketPath);
-		console.log((payload as File).type);
 
 		const avatarUploadPromise = supabase.storage
 			.from("avatars")

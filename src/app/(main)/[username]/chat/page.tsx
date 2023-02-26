@@ -28,8 +28,6 @@ export default async function Chat({
 		.eq("id", params.username)
 		.single());
 
-	console.log(data);
-
 	if (data?.id) {
 		conversation_id = data.id;
 	} else {

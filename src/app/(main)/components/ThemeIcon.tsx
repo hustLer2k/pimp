@@ -47,7 +47,7 @@ const ThemeIcon = ({
 						.from("profiles")
 						.update({ darkmode: newTheme })
 						.eq("id", userId)
-						.then(() => console.log(newTheme)),
+						.then(() => {}),
 				5000
 			);
 		}

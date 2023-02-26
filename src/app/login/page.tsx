@@ -71,8 +71,6 @@ export default function Auth() {
 			setError(error.message);
 			setLoading(false);
 		} else {
-			console.log(data);
-
 			if (isRegistering) router.replace("/account/setup");
 			else router.replace("/");
 		}

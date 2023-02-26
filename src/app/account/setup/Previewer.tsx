@@ -75,7 +75,6 @@ export default function Previewer({
 		if (!file) return;
 
 		const extension = getExtension(file.name);
-		console.log(extension);
 		if (!ACCEPTED_FILETYPES.has(extension)) {
 			setError(`Filetype not supported: ${extension}`);
 			return;
