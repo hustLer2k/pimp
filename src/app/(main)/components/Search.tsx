@@ -45,7 +45,7 @@ const Search = () => {
 	const blurHandler = (e: React.FocusEvent<HTMLDivElement>) => {
 		// console.log(e.target.tagName);
 
-		setTimeout(() => setExpanded(false), 100); // to do: find a better solution
+		setTimeout(() => setExpanded(false), 300); // to do: find a better solution
 		// without the timeout clicks on search results will not be processed
 	};
 	const focusHandler = () => {

@@ -15,7 +15,7 @@ export default function Input({
 	curUserID,
 	recipientId,
 	onSendMessage,
-	conversationId,
+	conversationId: conversationIdNullable,
 }: {
 	curUserID: string;
 	recipientId: string;
@@ -30,6 +30,7 @@ export default function Input({
 	const [attachments, setAttachments] = useState<File[]>([]);
 	const [attachmentsNames, setAttachmentNames] = useState<string[]>([]);
 	const [sending, setSending] = useState(false);
+	let [conversationId, setConversationId] = useState(conversationIdNullable);
 
 	useEffect(() => {
 		supabase
@@ -82,12 +83,12 @@ export default function Input({
 
 				error && console.error(error);
 
-				conversationId = data?.id;
+				conversationId = data!.id;
+				setConversationId(conversationId);
 			}
-
 			let message = {
 				sender: curUserID,
-				conversation_id: conversationId!,
+				conversation_id: conversationId,
 				payload,
 				attachments: attachmentsPaths.length ? attachmentsPaths : null,
 			};
