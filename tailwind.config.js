@@ -52,9 +52,15 @@ module.exports = {
 					"0%": { opacity: "0" },
 					"100%": { opacity: "1" },
 				},
+
+				slideshow: {
+					"0%": { transform: "translateX(0)" },
+					"100%": { transform: "translateX(-100%)" },
+				},
 			},
 			animation: {
 				fadein: "fadein 300ms ease-in-out",
+				slideshow: "slideshow 5s linear infinite alternate",
 			},
 		},
 	},
