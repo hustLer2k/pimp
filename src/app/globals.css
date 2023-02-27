@@ -29,9 +29,8 @@
 	}
 
 	.sidebar-hr {
-		@apply bg-gray-200 dark:bg-gray-800 
-    border border-gray-200 dark:border-gray-800 rounded-full
-    mx-2;
+		@apply bg-gray-300 dark:bg-gray-800 
+    border border-gray-300 dark:border-gray-800 rounded-full w-full h-px mx-2;
 	}
 
 	.top-navigation {
