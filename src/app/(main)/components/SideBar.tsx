@@ -86,6 +86,6 @@ const SideBar = async () => {
 	);
 };
 
-const Divider = () => <hr className="sidebar-hr" />;
+const Divider = () => <hr className="yyyyyy-hr" />;
 
 export default SideBar;

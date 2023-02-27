@@ -50,7 +50,7 @@ export default function Groups({
 			return;
 		}
 
-		const { data, error } = await supabase.from("conversations").insert({
+		const { error } = await supabase.from("conversations").insert({
 			participants_ids: [curId, userId],
 			creator_id: curId,
 			group: true,
@@ -68,9 +68,14 @@ export default function Groups({
 		conversationId: string,
 		participants: string[]
 	) {
+		const newParticipants = [...participants, userId];
+
 		const { error } = await supabase
 			.from("conversations")
-			.update({ participants_ids: [...participants, userId] })
+			.update({
+				participants_ids: newParticipants,
+				name: newParticipants.join(", "),
+			})
 			.eq("id", conversationId);
 
 		if (error) {
