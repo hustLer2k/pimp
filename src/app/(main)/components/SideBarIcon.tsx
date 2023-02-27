@@ -6,12 +6,12 @@ const SideBarIcon = ({
 	text = "tooltip 💡",
 	href = "/",
 }: {
-	icon: JSX.Element[] | JSX.Element;
+	icon: JSX.Element[];
 	text?: string;
 	href?: string;
 }) => (
 	<Link className="sidebar-icon group animate-fadein" href={href}>
-		{Array.isArray(icon) ? <Slideshow icons={icon} /> : icon}
+		{icon.length > 1 ? <Slideshow icons={icon} /> : icon}
 		<span className="sidebar-tooltip group-hover:scale-100">{text}</span>
 	</Link>
 );

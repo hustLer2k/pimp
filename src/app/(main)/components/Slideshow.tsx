@@ -2,15 +2,30 @@
 import { useState, useEffect } from "react";
 
 export default function Slideshow({ icons }: { icons: JSX.Element[] }) {
-	const [currentIcon, setCurrentIcon] = useState(0);
+	const [currentOffset, setCurrentOffset] = useState(0);
+	const [backwards, setDirection] = useState(false);
+	const maxOffset = (icons.length - 1) * 48;
 
 	useEffect(() => {
 		const interval = setInterval(() => {
-			setCurrentIcon((currentIcon + 1) % icons.length);
-		}, 3333);
+			if (currentOffset === 0) setDirection(false);
+			if (currentOffset >= maxOffset) setDirection(true);
+
+			if (backwards) setCurrentOffset(currentOffset - 1);
+			else setCurrentOffset(currentOffset + 1);
+		}, 47);
 
 		return () => clearInterval(interval);
-	}, [currentIcon, icons.length]);
+	}, [currentOffset, icons.length, maxOffset, backwards]);
 
-	return <div className="animate-fadein">{icons[currentIcon]}</div>;
+	return (
+		<div className="h-12 overflow-hidden relative">
+			<div
+				style={{ transform: `translateX(-${currentOffset}px)` }}
+				className="h-full flex items-center"
+			>
+				{icons}
+			</div>
+		</div>
+	);
 }

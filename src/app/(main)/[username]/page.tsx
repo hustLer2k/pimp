@@ -11,18 +11,21 @@ export default async function UserPage({
 }) {
 	const supabase = createClient();
 
+	if (params.username === "favicon.ico") return redirect("/");
+
 	const {
 		data: { session },
 	} = await supabase.auth.getSession();
+
 	if (!session) redirect("/login");
 
 	const { data, error } = await supabase
 		.from("profiles")
 		.select()
-		.eq("username", params.username)
-		.single();
+		.eq("username", params.username);
 
-	if (error || !data) throw new Error(error! && "Something went wrong.");
+	if (error || !data)
+		throw new Error(error?.message! || "Something went wrong.");
 
-	return <User curId={session.user.id} {...data} />;
+	return <User curId={session.user.id} {...data[0]} />;
 }

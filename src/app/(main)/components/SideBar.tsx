@@ -61,29 +61,27 @@ const SideBar = async () => {
 
 	return (
 		<div
-			className="fixed top-0 left-0 h-screen w-16 flex flex-col
-                  bg-white dark:bg-gray-900 shadow-lg"
+			className="fixed top-0 left-0 h-screen w-16 flex flex-col items-center
+                  bg-white dark:bg-gray-900 shadow-lg z-50"
 		>
 			<SideBarIcon
-				icon={<HomeIcon className="w-8 h-8" />}
+				icon={[<HomeIcon key="home" className="w-8 h-8" />]}
 				text="Home"
 				href="/"
 			/>
 			<Divider />
 
-			<div className="overflow-y-auto w-full flex flex-col items-center overflow-x-hidden scrollbar-hide">
-				{
-					// @ts-ignore
-					<SideChats
-						serverChats={SidebarIcons}
-						chatIds={Array.from(chatIds)}
-						curUserId={curUserId}
-					/>
-				}
-			</div>
+			<SideChats
+				serverChats={SidebarIcons}
+				chatIds={Array.from(chatIds)}
+				curUserId={curUserId}
+			/>
 
 			<Divider />
-			<SideBarIcon icon={<BsGearFill size="32" />} text="Settings" />
+			<SideBarIcon
+				icon={[<BsGearFill key="settings" size="32" />]}
+				text="Settings"
+			/>
 		</div>
 	);
 };

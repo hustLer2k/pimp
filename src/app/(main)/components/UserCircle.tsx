@@ -24,7 +24,7 @@ const UserCircle = async ({ userId }: { userId: string | undefined }) => {
 	}
 
 	return (
-		<Link href={username ? `/${username}` : "/login"}>
+		<Link className="mx-2" href={username ? `/${username}` : "/login"}>
 			<Avatar
 				avatar={avatar}
 				username={username}
