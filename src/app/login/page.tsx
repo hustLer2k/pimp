@@ -42,12 +42,18 @@ export default function Auth() {
 	const [isRegistering, setIsRegistering] = useState(true);
 	const [error, setError] = useState("");
 	const [isLoading, setLoading] = useState(false);
+	const [darkTheme, setDarkTheme] = useState(false);
 
 	const emailRef = useRef<InputRef>(null);
 	const PWRef = useRef<InputRef>(null);
 
-	const darkTheme =
-		window && window.matchMedia("(prefers-color-scheme: dark)").matches;
+	useEffect(
+		() =>
+			setDarkTheme(
+				window.matchMedia("(prefers-color-scheme: dark)").matches
+			),
+		[]
+	);
 
 	const formSubmitHandler = async (event: React.SyntheticEvent) => {
 		event.preventDefault();
