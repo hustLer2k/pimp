@@ -178,7 +178,7 @@ export default function Input({
 			onDragLeave={dragLeaveHandler}
 			className="bg-gray-50 dark:bg-gray-700 flex justify-center items-center min-h-[4rem] max-h-60 overflow-hidden"
 		>
-			<div className="overflow-auto mx-8 h-12 max-w-[30%]">
+			<div className="overflow-auto md:mx-8 h-12 max-w-[30%]">
 				{attachmentsNames.map((v, i) => (
 					<div
 						key={i}
@@ -204,8 +204,8 @@ export default function Input({
 			)}
 
 			<textarea
-				className={`m-0 max-h-60 w-[69%] bg-gray-300 dark:bg-gray-600 rounded-lg outline-transparent px-10 block border-transparent
-			  	focus:bg-gray-200 dark:focus:bg-gray-800 focus:ring-0 resize-none overflow-auto
+				className={`m-0 max-h-60 w-[69%] bg-gray-300 dark:bg-gray-600 rounded-lg outline-transparent block border-transparent
+			  	focus:bg-gray-200 dark:focus:bg-gray-800 focus:ring-0 resize-none overflow-auto px-10
 				  dark:text-white focus:border-transparent disabled:opacity-50 ${
 						dragOver && "hidden"
 					}`}

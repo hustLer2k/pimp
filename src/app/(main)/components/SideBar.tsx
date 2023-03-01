@@ -1,6 +1,5 @@
 import "server-only";
 
-import { BsGearFill } from "react-icons/bs";
 import { HomeIcon } from "@heroicons/react/24/solid";
 import { createClient } from "@/utils/supa-server";
 import getUserId from "@/utils/get-user-id";
@@ -69,22 +68,15 @@ const SideBar = async () => {
 				href="/"
 			/>
 			<Divider />
-
 			<SideChats
 				serverChats={SidebarIcons}
 				chatIds={Array.from(chatIds)}
 				curUserId={curUserId}
 			/>
-
-			<Divider />
-			<SideBarIcon
-				icon={[<BsGearFill key="settings" size="32" />]}
-				text="Settings"
-			/>
 		</div>
 	);
 };
 
-const Divider = () => <hr className="yyyyyy-hr" />;
+const Divider = () => <hr className="sidebar-hr" />;
 
 export default SideBar;

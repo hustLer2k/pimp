@@ -29,8 +29,8 @@
 	}
 
 	.sidebar-hr {
-		@apply bg-gray-300 dark:bg-gray-800 
-    border border-gray-300 dark:border-gray-800 rounded-full w-full h-px mx-2;
+		@apply bg-gray-300/80 dark:bg-gray-800 
+    border border-gray-300/80 dark:border-gray-800 rounded-full w-full h-px mx-2;
 	}
 
 	.top-navigation {
@@ -60,13 +60,13 @@
 
 	.title-text {
 		@apply text-xl text-gray-500 tracking-wider font-semibold text-opacity-80 
-    mr-auto ml-16 my-auto 
+    mr-2 md:mr-auto ml-20 my-auto 
     transition duration-300 ease-in-out;
 	}
 
 	.search {
-		@apply w-1/5 flex items-center justify-start 
-    bg-gray-400 dark:bg-gray-600
+		@apply flex items-center justify-start 
+    bg-gray-400 dark:bg-gray-600 w-full
     text-gray-500
     px-2 h-9 ml-0 mr-0 
     rounded-md shadow-md

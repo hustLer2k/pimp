@@ -147,7 +147,7 @@ export default function Message({
 					</div>
 				</div>
 			)}
-			<div className="text-gray-800 font-medium break-words overflow-hidden dark:text-gray-100 pl-16 whitespace-pre">
+			<div className="text-gray-800 font-medium break-words overflow-hidden dark:text-gray-100 pl-16 lg:whitespace-pre">
 				{showDate && !showProfile && dateJsx}
 				{message.payload}
 				{attachments}

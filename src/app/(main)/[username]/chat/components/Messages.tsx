@@ -36,7 +36,7 @@ export default function Messages({
 
 		messagesJSX = (
 			<div className="flex flex-col overflow-y-auto justify-center items-center overflow-x-hidden h-[calc(100%-4rem)] w-full">
-				<div className="flex flex-col-reverse min-h py-6 scroll-smooth overflow-y-auto overflow-x-hidden h-full pl-4 w-full">
+				<div className="flex flex-col-reverse min-h py-6 scroll-smooth overflow-y-auto overflow-x-hidden h-full pl-4 w-full items-center">
 					<div ref={messagesBottomRef}></div>
 					{messages?.map((message, index, allMessages) => {
 						lastMessageAuthor = allMessages[index + 1]?.sender;

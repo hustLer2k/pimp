@@ -52,7 +52,7 @@ const Search = () => {
 
 	return (
 		<div className="relative" onFocus={focusHandler} onBlur={blurHandler}>
-			<div className="search hover:ring-4 hover:ring-purple-600 peer w-[20vw] h-10">
+			<div className="search hover:ring-4 hover:ring-purple-600 peer h-10">
 				<input
 					className="search-input"
 					type="text"

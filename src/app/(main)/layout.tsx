@@ -4,7 +4,7 @@ import TopNavigation from "./components/TopNavigation";
 export default function Layout({ children }: { children: React.ReactNode }) {
 	return (
 		<>
-			<nav>
+			<nav className="w-full h-full overflow-hidden">
 				{/* @ts-ignore */}
 				<SideBar />
 				{/* @ts-ignore */}
