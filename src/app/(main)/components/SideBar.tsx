@@ -1,6 +1,8 @@
 import "server-only";
 
 import { HomeIcon } from "@heroicons/react/24/solid";
+import { BsGearFill } from "react-icons/bs";
+
 import { createClient } from "@/utils/supa-server";
 import getUserId from "@/utils/get-user-id";
 import SideChats from "./SideChats";
@@ -72,6 +74,12 @@ const SideBar = async () => {
 				serverChats={SidebarIcons}
 				chatIds={Array.from(chatIds)}
 				curUserId={curUserId}
+			/>
+			<Divider />
+			<SideBarIcon
+				icon={[<BsGearFill key="settings" size="32" />]}
+				text="Settings"
+				href="account/setup"
 			/>
 		</div>
 	);

@@ -2,7 +2,6 @@ import "server-only";
 
 import { createClient } from "@/utils/supa-server";
 import Avatar from "@/components/ui/Avatar";
-import { FaUserCircle, FaHashtag } from "react-icons/fa";
 import Link from "next/link";
 
 export const revalidate = 0;
@@ -24,17 +23,13 @@ const UserCircle = async ({ userId }: { userId: string | undefined }) => {
 	}
 
 	return (
-		<Link className="mx-2" href={username ? `/${username}` : "/login"}>
-			<Avatar
-				avatar={avatar}
-				username={username}
-				size={40}
-				classes="top-navigation-icon"
-			/>
+		<Link
+			className="md:mx-4 mx-2"
+			href={username ? `/${username}` : "/login"}
+		>
+			<Avatar avatar={avatar} username={username} size={40} />
 		</Link>
 	);
-
-	return <FaUserCircle size="24" className="top-navigation-icon" />;
 };
 
 export default UserCircle;

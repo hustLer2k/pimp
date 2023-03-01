@@ -77,7 +77,7 @@ const ThemeIcon = ({
 			: HiOutlineDesktopComputer;
 
 	return (
-		<span onClick={handleMode}>
+		<span onClick={handleMode} className="ml-14">
 			{<Icon title={THEME_MODES[themeMode]} {...ICON_OPTIONS} />}
 		</span>
 	);
