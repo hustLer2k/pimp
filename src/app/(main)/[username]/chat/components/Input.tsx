@@ -17,11 +17,13 @@ export default function Input({
 	recipientId,
 	onSendMessage,
 	conversationId: conversationIdNullable,
+	chatName,
 }: {
 	curUserID: string;
 	recipientId: string;
 	onSendMessage: (message: Message) => void;
 	conversationId: string | null | undefined;
+	chatName: string | null | undefined;
 }) {
 	const { supabase } = useSupabase();
 
@@ -34,19 +36,19 @@ export default function Input({
 	let [conversationId, setConversationId] = useState(conversationIdNullable);
 
 	useEffect(() => {
-		supabase
-			.from("profiles")
-			.select("name")
-			.eq("id", recipientId)
-			.single()
-			.then(({ data, error }) => {
-				if (error) {
-					console.error(error);
-				} else {
-					inputRef?.current &&
-						(inputRef.current.placeholder = `Message ${data.name}`);
-				}
-			});
+		// supabase
+		// 	.from("profiles")
+		// 	.select("name")
+		// 	.eq("id", recipientId)
+		// 	.single()
+		// 	.then(({ data, error }) => {
+		// 		if (error) {
+		// 			console.error(error);
+		// 		} else {
+		// 			inputRef?.current &&
+		// 				(inputRef.current.placeholder = `Message ${data.name}`);
+		// 		}
+		// 	});
 
 		document.addEventListener("keyup", (e: KeyboardEvent) => {
 			if (e.key !== "Enter") return;
@@ -88,6 +90,7 @@ export default function Input({
 				conversationId = data!.id;
 				setConversationId(conversationId);
 			}
+
 			let message = {
 				sender: curUserID,
 				conversation_id: conversationId,
@@ -202,7 +205,7 @@ export default function Input({
 
 			<textarea
 				className={`m-0 max-h-60 w-[69%] bg-gray-300 dark:bg-gray-600 rounded-lg outline-transparent px-10 block border-transparent
-			  	focus:bg-gray-200 dark:focus:bg-gray-800 focus:ring-0 resize-none overflow-auto lg:overflow-hidden
+			  	focus:bg-gray-200 dark:focus:bg-gray-800 focus:ring-0 resize-none overflow-auto
 				  dark:text-white focus:border-transparent disabled:opacity-50 ${
 						dragOver && "hidden"
 					}`}
@@ -212,6 +215,7 @@ export default function Input({
 				maxLength={993}
 				style={{ height: DEFAULT_HEIGHT }}
 				disabled={sending}
+				placeholder={`Message ${chatName}`}
 			/>
 		</div>
 	);

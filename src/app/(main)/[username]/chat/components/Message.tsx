@@ -31,33 +31,37 @@ const IMAGE_EXTENSIONS = new Set([
 
 export default function Message({
 	message,
-	curUser,
-	recipientUser,
 	showProfile = true,
 	lastMessageDate,
+	usersInfo,
 }: {
 	message: Message;
-	curUser: User | null;
-	recipientUser: User | null;
 	showProfile: boolean;
 	lastMessageDate: string | null;
+	usersInfo: {
+		[id: string]: User | null;
+	};
 }) {
 	const [attachments, setAttachments] = useState<JSX.Element[]>([]);
 	const [attachmentIds] = useState(new Set<string>());
-	const [userInfo, setUserInfo] = useState<User | null>(null);
+	const [userInfo, setUserInfo] = useState<User | null>(
+		usersInfo[message.sender]
+	);
 
 	const { supabase } = useSupabase();
 
 	useEffect(() => {
-		supabase
-			.from("profiles")
-			.select()
-			.eq("id", message.sender)
-			.single()
-			.then(({ data, error }) => {
-				if (error) console.error(error);
-				if (data) setUserInfo(data);
-			});
+		if (!userInfo) {
+			supabase
+				.from("profiles")
+				.select()
+				.eq("id", message.sender)
+				.single()
+				.then(({ data, error }) => {
+					if (error) console.error(error);
+					if (data) setUserInfo(data);
+				});
+		}
 
 		if (message.attachments) {
 			message.attachments.forEach(async (attachment) => {
@@ -69,7 +73,7 @@ export default function Message({
 				const { data, error } = await supabase.storage
 					.from("attachments")
 					.download(attachment);
-				error && console.error(error);
+				error && console.error(76, error);
 				if (!data) return;
 
 				const dataURL = window.URL.createObjectURL(data);
@@ -143,7 +147,7 @@ export default function Message({
 					</div>
 				</div>
 			)}
-			<div className="text-gray-800 font-medium break-words overflow-hidden dark:text-gray-100 pl-16">
+			<div className="text-gray-800 font-medium break-words overflow-hidden dark:text-gray-100 pl-16 whitespace-pre">
 				{showDate && !showProfile && dateJsx}
 				{message.payload}
 				{attachments}

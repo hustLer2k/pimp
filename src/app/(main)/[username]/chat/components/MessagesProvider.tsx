@@ -7,37 +7,28 @@ import Input from "./Input";
 import { useSupabase } from "@/components/store/supa-provider";
 
 type Message = Database["public"]["Tables"]["messages"]["Row"];
-import type { PostgrestSingleResponse } from "@supabase/postgrest-js/dist/main/types";
 type User = Database["public"]["Tables"]["profiles"]["Row"];
 
 export default function MessagesProvider({
 	curUserId,
 	recipientId,
-	messagesInfo,
+	serverMessages,
+	usersInfo,
 	conversationId,
+	chatName,
 }: {
 	curUserId: string;
 	recipientId: string;
-	messagesInfo: [
-		PostgrestSingleResponse<Message[]> | { data: null; error: null },
-		PostgrestSingleResponse<User>,
-		PostgrestSingleResponse<User>
-	];
+	serverMessages: Message[];
+	usersInfo: {
+		[id: string]: User | null;
+	};
 	conversationId: string | null | undefined;
+	chatName: string | null | undefined;
 }) {
 	const { supabase } = useSupabase();
 
-	const [
-		{ data: serverMessages, error: messagesError },
-		{ data: curUser, error: curUserError },
-		{ data: recipientUser, error: recipientUserError },
-	] = messagesInfo;
 	const [messages, setMessages] = useState(serverMessages || []);
-
-	if (messagesError) {
-		console.error(messagesError);
-		throw new Error("An error occured");
-	}
 
 	useEffect(() => {
 		const channel = supabase
@@ -74,16 +65,13 @@ export default function MessagesProvider({
 	return (
 		<>
 			<div className="h-full w-full overflow-hidden">
-				<Messages
-					curUser={curUser}
-					recipientUser={recipientUser}
-					messages={messages}
-				/>
+				<Messages messages={messages} usersInfo={usersInfo} />
 				<Input
 					curUserID={curUserId}
 					recipientId={recipientId}
 					onSendMessage={sendMessageHandler}
 					conversationId={conversationId}
+					chatName={chatName}
 				/>
 			</div>
 		</>

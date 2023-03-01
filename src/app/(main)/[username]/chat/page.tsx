@@ -6,6 +6,10 @@ import { createClient } from "@/utils/supa-server";
 import MessagesProvider from "./components/MessagesProvider";
 import getUserId from "@/utils/get-user-id";
 
+import { Database } from "@/lib/database.types";
+type User = Database["public"]["Tables"]["profiles"]["Row"];
+type Nullable<T> = T | undefined | null;
+
 export const revalidate = 0;
 
 export default async function Chat({
@@ -20,29 +24,48 @@ export default async function Chat({
 
 	let data,
 		error,
-		conversation_id: string | null | undefined = null,
-		recipientId: string | null | undefined = null;
+		conversation_id: Nullable<string> = null,
+		recipientId: Nullable<string> = null,
+		chatName: Nullable<string> = null;
+
 	({ data } = await supabase
 		.from("conversations")
-		.select("id")
+		.select("id, name, participants_ids")
 		.eq("id", params.username)
 		.single());
 
 	if (data?.id) {
 		conversation_id = data.id;
+
+		if (data.name) {
+			chatName = data.name;
+		} else {
+			({ data } = await supabase
+				.from("profiles")
+				.select("name")
+				.eq(
+					"id",
+					data.participants_ids.filter((id) => id !== curUserID)
+				)
+				.single());
+
+			chatName = data?.name;
+		}
 	} else {
 		({ data } = await supabase
 			.from("profiles")
-			.select("id")
+			.select("id, name")
 			.eq("username", params.username)
 			.single());
 
 		recipientId = data?.id;
 		if (!recipientId || curUserID === recipientId) return notFound();
 
+		chatName = data?.name;
 		({ data, error } = await supabase
 			.from("conversations")
 			.select("id")
+			.eq("group", false)
 			.contains("participants_ids", [curUserID, recipientId]));
 
 		error && console.error(error);
@@ -51,38 +74,44 @@ export default async function Chat({
 		conversation_id = data?.[0]?.id;
 	}
 
-	// messsenges info
-	const messagesPromise = conversation_id
-		? supabase
-				.from("messages")
-				.select()
-				.eq("conversation_id", conversation_id)
-				.order("created_at", { ascending: false })
-		: Promise.resolve({ data: null, error: null });
+	const userIds = new Set<string>();
+	const users: { [id: string]: User | null } = {};
 
-	const curUserPromise = supabase
-		.from("profiles")
-		.select()
-		.eq("id", curUserID)
-		.single();
-	const recipientPromise = supabase
-		.from("profiles")
-		.select()
-		.eq("id", recipientId)
-		.single();
+	if (conversation_id) {
+		({ data, error } = await supabase
+			.from("messages")
+			.select()
+			.eq("conversation_id", conversation_id)
+			.order("created_at", { ascending: false }));
 
-	const messagesInfo = await Promise.all([
-		messagesPromise,
-		curUserPromise,
-		recipientPromise,
-	]);
+		if (error) throw new Error(error.message);
+
+		data!.forEach((message) => userIds.add(message.sender));
+	} else {
+		userIds.add(curUserID).add(recipientId!);
+		data = [];
+	}
+
+	for (let userId of userIds) {
+		const { data: userData, error: userError } = await supabase
+			.from("profiles")
+			.select()
+			.eq("id", userId)
+			.single();
+
+		if (userError) console.error(userError);
+
+		users[userId] = userData;
+	}
 
 	return (
 		<MessagesProvider
 			curUserId={curUserID}
 			recipientId={recipientId!}
-			messagesInfo={messagesInfo}
+			serverMessages={data!}
+			usersInfo={users}
 			conversationId={conversation_id}
+			chatName={chatName}
 		/>
 	);
 }

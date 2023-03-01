@@ -7,21 +7,21 @@ type User = Database["public"]["Tables"]["profiles"]["Row"];
 type Message = Database["public"]["Tables"]["messages"]["Row"];
 
 export default function Messages({
-	curUser,
 	messages,
-	recipientUser,
+	usersInfo,
 }: {
-	curUser: User | null;
 	messages: Message[] | null;
-	recipientUser: User | null;
+	usersInfo: {
+		[id: string]: User | null;
+	};
 }) {
 	let messagesJSX;
-	const messagesContainerRef = useRef<HTMLDivElement>(null);
+	const messagesBottomRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
-		messagesContainerRef.current?.scrollIntoView({
+		messagesBottomRef.current?.scrollIntoView({
 			behavior: "smooth",
-			block: "end",
+			block: "start",
 		});
 	}, [messages]);
 
@@ -36,19 +36,16 @@ export default function Messages({
 
 		messagesJSX = (
 			<div className="flex flex-col overflow-y-auto justify-center items-center overflow-x-hidden h-[calc(100%-4rem)] w-full">
-				<div
-					className="flex flex-col-reverse min-h py-6 scroll-smooth overflow-y-auto overflow-x-hidden h-full pl-4 w-full"
-					ref={messagesContainerRef}
-				>
+				<div className="flex flex-col-reverse min-h py-6 scroll-smooth overflow-y-auto overflow-x-hidden h-full pl-4 w-full">
+					<div ref={messagesBottomRef}></div>
 					{messages?.map((message, index, allMessages) => {
 						lastMessageAuthor = allMessages[index + 1]?.sender;
 
 						return (
 							<Message
+								usersInfo={usersInfo}
 								key={message.id}
 								message={message}
-								curUser={curUser}
-								recipientUser={recipientUser}
 								showProfile={
 									lastMessageAuthor === message.sender
 										? false
