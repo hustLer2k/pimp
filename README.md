@@ -22,9 +22,7 @@ Pimp includes the following features:
 -   User authentication: Users can create an account or log in to an existing account using their email address and password.
 -   Real-time messaging: Users can send and receive messages in real-time, with support for text, images, and other multimedia content. Group chats are supported as well.
 -   User profiles: Users can view and update their profiles, including their name, profile picture, and other personal information.
--   Contacts: Users can view and manage their contacts, including adding and removing contacts and viewing their contact list. ( to be implemented )
 -   Search: Users can search for other users within the application and send friend requests.
--   Notifications: Users receive notifications for new messages, friend requests, and other important events within the application. ( to be implemented )
 
 ### Technologies Used
 
