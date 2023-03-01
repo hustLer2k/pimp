@@ -4,7 +4,7 @@ Pimp is a messaging application built with Next 13, designed to provide users wi
 
 ### Getting Started
 
-Visit https://pimp-91srcpm3l-hustler2k.vercel.app in your browser.
+Visit https://pimp-seven.vercel.app/ in your browser.
 
 Or to run the Pimp application on your local machine, follow these steps:
 
