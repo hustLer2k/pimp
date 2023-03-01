@@ -5,7 +5,7 @@ import { useState } from "react";
 import { UserGroupIcon } from "@heroicons/react/24/outline";
 import { useSupabase } from "@/components/store/supa-provider";
 
-import { Database } from "@/lib/database.types";
+import { Database } from "@/lib/database";
 type Conversation = Database["public"]["Tables"]["conversations"]["Row"];
 
 export default function Groups({

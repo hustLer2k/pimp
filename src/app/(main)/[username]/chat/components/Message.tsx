@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import getExtension from "@/utils/get-extension";
-import { Database } from "@/lib/database.types";
+import { Database } from "@/lib/database";
 import { roboto_mono } from "@/components/ui/fonts";
 import { useSupabase } from "@/components/store/supa-provider";
 import { FolderArrowDownIcon } from "@heroicons/react/24/outline";

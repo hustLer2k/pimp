@@ -7,7 +7,7 @@ import { v4 } from "uuid";
 import getExtension from "@/utils/get-extension";
 import { roboto_mono } from "@/components/ui/fonts";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { Database } from "@/lib/database.types";
+import { Database } from "@/lib/database";
 type Message = Database["public"]["Tables"]["messages"]["Row"];
 
 const DEFAULT_HEIGHT = "42px";

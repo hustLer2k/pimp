@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { Database } from "@/lib/database.types";
+import { Database } from "@/lib/database";
 
 export default async function getUserId(supabase: SupabaseClient<Database>) {
 	const { data, error } = await supabase.auth.getSession();

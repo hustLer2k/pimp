@@ -4,7 +4,7 @@ import { useSupabase } from "@/components/store/supa-provider";
 import SideBarIcon from "./SideBarIcon";
 import Avatar from "@/components/ui/Avatar";
 
-import { Database } from "@/lib/database.types";
+import { Database } from "@/lib/database";
 type Conversation = Database["public"]["Tables"]["conversations"]["Row"];
 
 export default function SideChats({

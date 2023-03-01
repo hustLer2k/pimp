@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Database } from "@/lib/database.types";
+import { Database } from "@/lib/database";
 import Messages from "./Messages";
 import Input from "./Input";
 import { useSupabase } from "@/components/store/supa-provider";

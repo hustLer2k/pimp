@@ -6,7 +6,7 @@ import { createClient } from "@/utils/supa-server";
 import MessagesProvider from "./components/MessagesProvider";
 import getUserId from "@/utils/get-user-id";
 
-import { Database } from "@/lib/database.types";
+import { Database } from "@/lib/database";
 type User = Database["public"]["Tables"]["profiles"]["Row"];
 type Nullable<T> = T | undefined | null;
 

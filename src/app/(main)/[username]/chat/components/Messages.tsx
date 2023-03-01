@@ -1,5 +1,5 @@
 "use client";
-import { Database } from "@/lib/database.types";
+import { Database } from "@/lib/database";
 import { useEffect, useRef } from "react";
 import Message from "./Message";
 
