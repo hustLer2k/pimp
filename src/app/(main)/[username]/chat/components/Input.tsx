@@ -81,7 +81,6 @@ export default function Input({
 						participants_ids: [curUserID, recipientId],
 						creator_id: curUserID,
 						group: false,
-						name: chatName,
 					})
 					.select("id")
 					.single();
