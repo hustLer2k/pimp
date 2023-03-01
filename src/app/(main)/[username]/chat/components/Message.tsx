@@ -112,12 +112,6 @@ export default function Message({
 		}
 	}, [message.attachments, message.sender]);
 
-	// const curUserID = curUser?.id;
-	// const sentByCurrentUser = message.sender === curUserID;
-	// const userInfo = sentByCurrentUser
-	// 	? (curUser as unknown as User)
-	// 	: (recipientUser as unknown as User);
-
 	const date = DateFormat(new Date(message.created_at));
 	const dateJsx = (
 		<p className="text-sm text-gray-700 dark:text-gray-400">{date}</p>

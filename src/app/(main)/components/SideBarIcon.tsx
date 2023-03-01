@@ -12,8 +12,11 @@ const SideBarIcon = ({
 	<Link className="sidebar-icon group animate-fadein" href={href}>
 		{icon.length > 1 ? (
 			<div className="h-12 overflow-hidden relative">
-				<div className="h-full flex items-center animate-slideshow">
-					{icon}
+				<div
+					className="animate-slideshow h-full"
+					style={{ width: `${(icon.length - 1) * 48}px` }}
+				>
+					<div className="w-max h-full flex items-center">{icon}</div>
 				</div>
 			</div>
 		) : (

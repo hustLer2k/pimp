@@ -15,7 +15,6 @@ const SideBar = async () => {
 	const curUserId = await getUserId(supabase);
 	if (!curUserId) throw new Error("User is not logged in");
 
-	// TODO: add group chats
 	let { data } = await supabase
 		.from("conversations")
 		.select("participants_ids, id")

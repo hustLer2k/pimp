@@ -4,7 +4,7 @@ import botAvatar from "@public/bot.svg";
 export default function Avatar({
 	avatar,
 	username,
-	size = 50,
+	size = 48,
 	classes = "",
 	priority = false,
 }: {
